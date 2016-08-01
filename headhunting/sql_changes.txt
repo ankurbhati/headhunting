@@ -1,0 +1,3 @@
+RENAME TABLE `headhunting`.`conpany_details` TO `headhunting`.`company_details` ;
+ALTER TABLE `clients` CHANGE `phone` `phone` VARCHAR( 20 ) NULL DEFAULT NULL ;
+ALTER TABLE `vendors` CHANGE `phone` `phone` VARCHAR( 20 ) NULL DEFAULT NULL ;
