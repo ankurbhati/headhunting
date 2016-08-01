@@ -61,7 +61,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'dashboard-view',
 			'uses'    =>    'UserController@home'
 	));
-	
+
 	/**
 	 * Routes For REST API for new Employee
 	 */
@@ -69,7 +69,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'add-employee',
 			'uses'    =>    'UserController@addEmployee'
 	));
-	
+
 	/**
 	 * Routes For REST API for new Employee
 	 */
@@ -77,7 +77,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'add-member',
 			'uses'    =>    'UserController@addEmp'
 	));
-	
+
 	/**
 	 * Routes For REST API for new Employee
 	 */
@@ -85,7 +85,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'delete-member',
 			'uses'    =>    'UserController@deleteEmp'
 	));
-	
+
 	/**
 	 * Routes For REST API for new Employee
 	 */
@@ -134,7 +134,7 @@ Route::group(array('before' => 'auth'), function() {
 			'uses'    =>    'UserController@getCities'
 	));
 
-	
+
 	/**
 	 * Routes For REST API for Change Password
 	 */
@@ -142,7 +142,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'change-password',
 			'uses'    =>    'UserController@updatePassView'
 	));
-	
+
 	/**
 	 * Routes For REST API for Change Password
 	 */
@@ -174,8 +174,8 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'employee-list',
 			'uses'    =>    'UserController@employeeList'
 	));
-	
-	
+
+
 	/**
 	 * Routes for post-requirement
 	 */
@@ -183,7 +183,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'post-requirement',
 			'uses'    =>    'SaleController@postRequirementView'
 	));
-	
+
 	/**
 	 * Routes for post-requirement
 	 */
@@ -191,7 +191,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'edit-requirement',
 			'uses'    =>    'SaleController@editRequirementView'
 	));
-	
+
 	/**
 	 * Routes for list-requirement
 	 */
@@ -199,7 +199,17 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'list-requirement',
 			'uses'    =>    'SaleController@listRequirement'
 	));
-	
+
+
+	/**
+	 * Routes for list-requirement
+	 */
+	Route::match(array('GET'), '/view-requirement/{id}', array(
+			'as'    =>    'view-requirement',
+			'uses'    =>    'SaleController@viewRequirement'
+	));
+
+
 	/**
 	 * Routes for list-requirement
 	 */
@@ -207,7 +217,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'assigned-requirement',
 			'uses'    =>    'SaleController@listRequirement'
 	));
-	
+
 	/**
 	 * Routes for list-requirement
 	 */
@@ -223,7 +233,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'assign-requirement',
 			'uses'    =>    'SaleController@assignRequirement'
 	));
-	
+
 	/**
 	 * Routes for post-requirement
 	 */
@@ -258,7 +268,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'add-client',
 			'uses'    =>    'ClientController@create'
 	));
-	
+
 	/**
 	 * Routes For REST API for new Client
 	 */
@@ -315,7 +325,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'add-vendor',
 			'uses'    =>    'VendorController@create'
 	));
-	
+
 	/**
 	 * Routes For REST API for new Vendor
 	 */
@@ -376,7 +386,7 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'add-candidate',
 			'uses'    =>    'CandidateController@create'
 	));
-	
+
 	/**
 	 * Routes For REST API for new Candidate
 	 */

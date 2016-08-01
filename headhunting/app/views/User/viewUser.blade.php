@@ -3,7 +3,7 @@
 <div class="row user-view">
 	<div class="col-sm-4 left-view">
 		<div class="image text-center">
-			<img class="img-circle" alt="User Image" src="../dist/img/user2-160x160.jpg">
+			<img class="img-circle" alt="User Image" src="../dist/img/avatar5.png">
 		</div>
 	</div>
 	<div class="col-sm-8 right-view">
@@ -13,7 +13,7 @@
 	        	{{$user->email}}
 	        </div>
 	    </div>
-	
+
 	    <div class="row"><div class="col-sm-4">
 	        First Name:
 	        </div><div class="col-sm-8">
@@ -26,7 +26,7 @@
 	        	{{$user->last_name}}
 	        </div>
 	    </div>
-	
+
 	    <div class="row"><div class="col-sm-4">
 	        Designation:
 	        </div><div class="col-sm-8">
@@ -44,7 +44,7 @@
 	        </div><div class="col-sm-8">
 	        	{{($user->doj != "" && $user->doj != "0000-00-00 00:00:00")?date("Y-m-d", strtotime($user->doj)):"-"}}
 	        </div>
-	    </div>    
+	    </div>
 	    <div class="row"><div class="col-sm-4">
 	        Date Of Release:
 	        </div><div class="col-sm-8">
@@ -81,7 +81,7 @@
 	        	{{$user->city}}
 	        </div>
 	    </div>
-	    
+
 	    <div class="row"><div class="col-sm-4">
 	        Address:
 	        </div><div class="col-sm-8">

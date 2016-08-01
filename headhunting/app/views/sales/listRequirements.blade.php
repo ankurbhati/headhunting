@@ -28,7 +28,7 @@
 								<td>{{$jobPosts->client_name}}</td>
 								<td>{{($jobPosts->status == 1)?"Closed":"Open";}}</td>
 		                        <td>
-		                        	<a href="{{ URL::route('view-member', array('id' => $jobPosts->id)) }}" title="View Job Post"><i class="fa fa-fw fa-eye"></i></a>
+		                        	<a href="{{ URL::route('view-requirement', array('id' => $jobPosts->id)) }}" title="View Job Post"><i class="fa fa-fw fa-eye"></i></a>
 		                        	<a href="{{ URL::route('edit-requirement', array($jobPosts->id)) }}" title="Edit Job Post"><i class="fa fa-fw fa-edit"></i></a>
 		                        	@if($id == 0 && $jobPosts->jobsAssignedToMe()->count() == 0)
 		                        		<a href="{{ URL::route('assign-requirement', array($jobPosts->id)) }}" title="Assign To me"><i class="fa fa-plus"></i></a>

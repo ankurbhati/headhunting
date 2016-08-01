@@ -57,10 +57,10 @@ class SaleController extends HelperController {
 		$jobPostAssignment->status = 2;
 		if($jobPostAssignment->save()) {
 			if(Auth::user()->id == $jobPostAssignment->assigned_to_id) {
-				
+
 				return Redirect::route('assigned-requirement', array($jobPostAssignment->assigned_to_id));
 			} else {
-				return Redirect::route('list-requirement');				
+				return Redirect::route('list-requirement');
 			}
 		} else {
 			return Redirect::to('dashboard')->with(array("message" => "error"));
@@ -78,6 +78,18 @@ class SaleController extends HelperController {
 			$jobPost = JobPost::find($id)->delete();
 		}
 		return Redirect::route('list-requirement');
+	}
+
+	/**
+	 *
+	 * viewRequirement() : viewRequirement
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function viewRequirement($id) {
+		$jobPost = JobPost::with(array('country', 'state'))->find($id);
+		return View::make('sales.viewRequirement')->with(array('title' => 'View Requirement - Headhunting', 'jobPost' => $jobPost,));
 	}
 
 	/**
@@ -122,7 +134,7 @@ class SaleController extends HelperController {
 							'description' =>  'required|max:1000',
 					)
 			);
-	
+
 			if($validate->fails()) {
 
 				return Redirect::to('post-requirement')
@@ -173,14 +185,14 @@ class SaleController extends HelperController {
 							'description' =>  'required|max:1000',
 					)
 			);
-	
+
 			if($validate->fails()) {
-	
+
 				return Redirect::to('post-requirement')
 				->withErrors($validate)
 				->withInput();
 			} else {
-	
+
 				$inputs = Input::except(array('_token', '_wysihtml5_mode', 'status', 'created_by'));
 				$jobPost->setConnection('master');
 				foreach($inputs as $key => $value) {
@@ -188,7 +200,7 @@ class SaleController extends HelperController {
 				}
 				$jobPost->created_by = Auth::user()->id;
 				$jobPost->status = $jobPost->status;
-	
+
 				if($jobPost->save()) {
 					return Redirect::route('list-requirement');
 				} else {
@@ -198,7 +210,7 @@ class SaleController extends HelperController {
 		}
 	}
 
-	
+
 	/**
 	 *
 	 * editRequirementView() : editRequirementView
@@ -221,5 +233,5 @@ class SaleController extends HelperController {
 			return Redirect::to('dashboard');
 		}
 	}
-	
+
 }

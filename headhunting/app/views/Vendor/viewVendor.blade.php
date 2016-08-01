@@ -1,19 +1,14 @@
 @extends('layouts.adminLayout')
 @section('content')
 <div class="row user-view">
-	<div class="col-sm-4 left-view">
-		<div class="image text-center">
-			<img class="img-circle" alt="User Image" src="../dist/img/user2-160x160.jpg">
-		</div>
-	</div>
-	<div class="col-sm-8 right-view">
+	<div class="col-sm-12 right-view">
 	    <div class="row"><div class="col-sm-4">
 	        Email:
 	        </div><div class="col-sm-8">
 	        	{{$vendor->email}}
 	        </div>
 	    </div>
-	
+
 	    <div class="row"><div class="col-sm-4">
 	        Vendor Domain:
 	        </div><div class="col-sm-8">
@@ -26,7 +21,7 @@
 	        	{{$vendor->phone}}
 	        </div>
 	    </div>
-	    
+
 	    <div class="row"><div class="col-sm-4">
 	        Is Partner:
 	        </div><div class="col-sm-8">
@@ -42,7 +37,7 @@
 	        </div><div class="col-sm-8">
 	        	{{$vendor->createdby->first_name. " ".$vendor->createdby->last_name }}
 	        </div>
-	    </div>    
+	    </div>
 	    <div class="row"><div class="col-sm-4">
 	        Created At:
 	        </div><div class="col-sm-8">

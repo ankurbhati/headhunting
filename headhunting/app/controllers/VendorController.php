@@ -25,12 +25,12 @@ class VendorController extends \BaseController {
 
 		if(Auth::user()->getRole() <= 3) {
 			Validator::extend('has', function($attr, $value, $params) {
-	
+
 				if(!count($params)) {
-					
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-				
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -51,15 +51,15 @@ class VendorController extends \BaseController {
 						default:
 							$regex = $param;
 					}
-	
+
 					if(! preg_match($regex, $value)) {
 						return false;
 					}
 				}
-	
+
 				return true;
 			});
-			
+
 			// Server Side Validation.
 			$validate=Validator::make (
 					Input::all(), array(
@@ -69,7 +69,7 @@ class VendorController extends \BaseController {
 							'partner' => 'max:1'
 					)
 			);
-	
+
 			if($validate->fails()) {
 
 				return Redirect::to('add-vendor')
@@ -86,7 +86,7 @@ class VendorController extends \BaseController {
 
 				// Checking Authorised or not
 				if($vendor->save()) {
-					return Redirect::to('dashboard');
+					return Redirect::to('vendors');
 				} else {
 					return Redirect::to('add-vendor')->withInput();
 				}
@@ -175,12 +175,12 @@ class VendorController extends \BaseController {
 	{
 		if(Auth::user()->getRole() <= 3) {
 			Validator::extend('has', function($attr, $value, $params) {
-		
+
 				if(!count($params)) {
-		
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-		
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -209,7 +209,7 @@ class VendorController extends \BaseController {
 
 				return true;
 			});
-			
+
 			// Server Side Validation.
 			$validate=Validator::make (
 				Input::all(), array(
@@ -220,7 +220,7 @@ class VendorController extends \BaseController {
 				)
 			);
 			if($validate->fails()) {
-				
+
 				return Redirect::route('edit-vendor', array('id' => $id))
 								->withErrors($validate)
 								->withInput();
@@ -234,7 +234,7 @@ class VendorController extends \BaseController {
 				$vendor->created_by = Auth::user()->id;
 				// Checking Authorised or not
 				if($vendor->save()) {
-					
+
 					return Redirect::route('vendor-list');
 				} else {
 

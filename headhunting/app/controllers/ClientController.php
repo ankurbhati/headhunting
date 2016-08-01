@@ -30,12 +30,12 @@ class ClientController extends \BaseController {
 
 		if(Auth::user()->getRole() <= 3) {
 			Validator::extend('has', function($attr, $value, $params) {
-	
+
 				if(!count($params)) {
-					
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-				
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -56,15 +56,15 @@ class ClientController extends \BaseController {
 						default:
 							$regex = $param;
 					}
-	
+
 					if(! preg_match($regex, $value)) {
 						return false;
 					}
 				}
-	
+
 				return true;
 			});
-			
+
 			// Server Side Validation.
 			$validate=Validator::make (
 					Input::all(), array(
@@ -75,7 +75,7 @@ class ClientController extends \BaseController {
 							'company' =>  'required|min:1|Exists:company_details,id',
 					)
 			);
-	
+
 			if($validate->fails()) {
 
 				return Redirect::to('add-client')
@@ -93,7 +93,7 @@ class ClientController extends \BaseController {
 
 				// Checking Authorised or not
 				if($client->save()) {
-					return Redirect::to('dashboard');
+					return Redirect::to('clients');
 				} else {
 					return Redirect::to('add-client')->withInput();
 				}
@@ -187,12 +187,12 @@ class ClientController extends \BaseController {
 	{
 		if(Auth::user()->getRole() <= 3) {
 			Validator::extend('has', function($attr, $value, $params) {
-		
+
 				if(!count($params)) {
-		
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-		
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -221,7 +221,7 @@ class ClientController extends \BaseController {
 
 				return true;
 			});
-			
+
 			// Server Side Validation.
 			$validate=Validator::make (
 					Input::all(), array(
@@ -233,7 +233,7 @@ class ClientController extends \BaseController {
 					)
 			);
 			if($validate->fails()) {
-				
+
 				return Redirect::route('edit-client', array('id' => $id))
 								->withErrors($validate)
 								->withInput();
@@ -248,7 +248,7 @@ class ClientController extends \BaseController {
 
 				// Checking Authorised or not
 				if($client->save()) {
-					
+
 					return Redirect::route('dashboard-view');
 				} else {
 
