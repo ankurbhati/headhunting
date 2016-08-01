@@ -17,7 +17,7 @@ class CandidateController extends \BaseController {
 			$country[$value->id] = $value->country;
 		}
 		$state = State::all();
-		$visa = ['H1', 'L1', 'Business'];
+		$visa = ['0' => 'No Visa', '1' => 'H1', '2'=>'L1', '3' => 'Business'];
 		$vendor = Vendor::all();
 		return View::make('Candidate.newCandidate')->with(array('title' => 'Add Candidate', 'city' => $city, 'country' => $country, 'state' => $state, 'visa' => $visa, 'vendor' => $vendor));
 	}
