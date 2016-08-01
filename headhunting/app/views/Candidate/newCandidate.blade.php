@@ -127,7 +127,7 @@
     <div class="form-group">
         {{ Form::label('resume', 'Upload Resume: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8"><input type="file" class="form-control">
+        <div class="col-sm-8"><input type="file">
             <span class='errorlogin email-login'>{{$errors->first('resume');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
