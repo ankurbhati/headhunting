@@ -2,7 +2,7 @@
 @section('content')
 <div class="content">
 {{ Form::open(array('route' => 'add-candidate','class' =>
-'form-horizontal','id' => 'login-form',  'method' => 'POST')) }}
+'form-horizontal','id' => 'login-form',  'method' => 'POST', 'enctype' => 'multipart/form-data')) }}
 
     <div class="form-group">
         {{ Form::label('email', 'E-Mail: ', array('class' => 'col-sm-3
@@ -32,11 +32,20 @@
     <div class="form-group">
         {{ Form::label('dob', 'Date Of Birth: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::text('dob', "", array('class' =>
+        <div class="col-sm-8 input-group date" data-provide="datepicker">{{ Form::text('dob', "", array('class' =>
             'form-control', 'placeholder' => 'Enter Candidates date of birth')); }} 
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
             <span class='errorlogin email-login'>{{$errors->first('dob');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
+    <!--<div class="input-group date" data-provide="datepicker">
+        <input type="text" class="form-control">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-th"></span>
+        </div>
+    </div>-->
     <div class="form-group">
         {{ Form::label('Password', 'Password: ', array('class' => 'col-sm-3
         control-label')); }}
@@ -47,7 +56,7 @@
     </div>
 
     <div class="form-group">
-        {{ Form::label('Confirm Password', 'ConfirmPassword: ', array('class' => 'col-sm-3
+        {{ Form::label('confirm_password', 'Confirm Password: ', array('class' => 'col-sm-3
         control-label')); }}
         <div class="col-sm-8">
             {{ Form::password('confirm_password', array('class' => 'form-control', 'placeholder' => 'Confirm Password')); }} 
@@ -74,15 +83,16 @@
     <div class="form-group">
         {{ Form::label('state_id', 'State: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::select('state_id', $state, null, array('class' => 'form-control')) }} 
+        <div class="col-sm-8">{{ Form::select('state_id', [], null, array('class' => 'form-control')) }} 
             <span class='errorlogin email-login'>{{$errors->first('state_id');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
 
     <div class="form-group">
-        {{ Form::label('citi_id', 'Citi: ', array('class' => 'col-sm-3
+        {{ Form::label('city', 'City: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::select('citi_id', $city, null, array('class' => 'form-control')) }} 
+        <div class="col-sm-8">{{ Form::text('city', "", array('class' =>
+            'form-control', 'placeholder' => 'Enter Candidates City')); }} 
             <span class='errorlogin email-login'>{{$errors->first('country_id');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
@@ -127,8 +137,12 @@
     <div class="form-group">
         {{ Form::label('resume', 'Upload Resume: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8"><input type="file">
-            <span class='errorlogin email-login'>{{$errors->first('resume');}}@if(!empty($message)){{$message}}@endIf</span>
+        <div class="col-sm-8"><input type="file" name="resume">
+        @if(Session::has('resume_error'))
+            <span class="errorlogin email-login">
+                {{ Session::get('resume_error') }}
+            </span>
+        @endif
         </div>
     </div>
     <div class="form-group row ">

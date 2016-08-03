@@ -10,11 +10,12 @@ class ClientController extends \BaseController {
 	 */
 	public function create()
 	{
-		$company = CompanyDetail::all();
-		$companies = array();
-		foreach( $company as $key => $value) {
-			$companies[$value->id] = $value->company_name;
-		}
+		//$company = CompanyDetail::all();
+		$companies = CompanyDetail::all()->lists('company_name', 'id');
+		//$companies = array();
+		//foreach( $company as $key => $value) {
+		//	$companies[$value->id] = $value->company_name;
+		//}
 
 		return View::make('Client.newClient')->with(array('title' => 'Add Client', 'companies' => $companies));
 	}
@@ -111,7 +112,7 @@ class ClientController extends \BaseController {
 	 */
 	public function clientList() {
 		$clients = Client::with(array('company'))->get();
-		return View::make('Client.clientList')->with(array('title' => 'clients List', 'clients' => $clients));
+		return View::make('Client.clientList')->with(array('title' => 'Clients List', 'clients' => $clients));
 	}
 
 
@@ -126,7 +127,7 @@ class ClientController extends \BaseController {
 
 		if(Auth::user()->getRole() <= 3) {
 
-			$client = Client::with(array('company', 'createdby'))->get();
+			$client = Client::with(array('company', 'createdby'))->where('id', '=', $id)->get();
 
 			if(!$client->isEmpty()) {
 				$client = $client->first();
@@ -153,11 +154,13 @@ class ClientController extends \BaseController {
 	public function editClient($id) {
 
 		if(Auth::user()->getRole() <= 3) {
+			$companies = CompanyDetail::all()->lists('company_name', 'id');	
+			/*
 			$company = CompanyDetail::all();
 			$companies = array();
 			foreach( $company as $key => $value) {
 				$companies[$value->id] = $value->company_name;
-			}
+			}*/
 
 			$client = Client::with(array('company'))->where('id', '=', $id)->get();
 

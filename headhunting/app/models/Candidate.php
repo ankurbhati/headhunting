@@ -25,4 +25,71 @@ class Candidate extends Eloquent {
      * @var string
      */
     protected $table = 'candidates';
+
+    /**
+     *
+     * candidate : Relation between candidate & visa.
+     *
+     * @return Object belongs to Relation candidate & visa.
+     */
+    public function visa() {
+    
+    	return $this->belongsTo('Visa','visa_id','id');
+    }
+
+    /**
+     *
+     * countries : Relation between candidate & City.
+     *
+     * @return Object belongs to Relation candidate & City..
+     */
+    public function city() {
+    
+    	return $this->belongsTo('City','city_id','id');
+    }
+
+    /**
+     *
+     * countries : Relation between candidate & State.
+     *
+     * @return Object belongs to Relation candidate & State..
+     */
+    public function state() {
+    
+    	return $this->belongsTo('State','state_id','id');
+    }
+
+    /**
+     *
+     * countries : Relation between candidate & Country.
+     *
+     * @return Object belongs to Relation candidate & Country..
+     */
+    public function country() {
+    
+    	return $this->belongsTo('Country','country_id','id');
+    }
+
+    /**
+     *
+     * countries : Relation between candidate & Vendor.
+     *
+     * @return Object belongs to Relation candidate & Vendor..
+     */
+    public function vendor() {
+    
+    	return $this->belongsTo('Vendor','vendor_id','id');
+    }
+
+    /**
+     *
+     * countries : Relation between candidate & User.
+     *
+     * @return Object belongs to Relation candidate & User..
+     */
+    public function createdby() {
+    
+    	return $this->belongsTo('User','added_by','id');
+    }
+
 }

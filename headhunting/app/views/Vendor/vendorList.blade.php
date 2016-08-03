@@ -40,7 +40,7 @@
 		                        </td>
 		                      </tr>
 	                   	@empty
-	                   		<p>No client</p>
+	                   		<p>No Vendor</p>
 						@endforelse
                     </tbody>
                     <tfoot>

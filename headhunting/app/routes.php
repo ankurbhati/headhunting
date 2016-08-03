@@ -374,12 +374,7 @@ Route::group(array('before' => 'auth'), function() {
 			'uses'    =>    'VendorController@deleteVendor'
 	));
 
-	Route::match(array('GET'), 'test', array(
-			'as'    =>    'test',
-			'uses'    =>    'CandidateController@test'
-	));
-
-		/**
+	/**
 	 * Routes For REST API for new Candidate
 	 */
 	Route::match(array('GET'), '/add-candidate', array(

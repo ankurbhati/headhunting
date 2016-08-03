@@ -63,7 +63,7 @@ class VendorController extends \BaseController {
 			// Server Side Validation.
 			$validate=Validator::make (
 					Input::all(), array(
-							'email' =>  'required|max:50|email|unique:clients,email',
+							'email' =>  'required|max:50|email|unique:vendors,email',
 							'vendor_domain' => 'required|max:50',
 							'phone' => 'max:14',
 							'partner' => 'max:1'
@@ -104,7 +104,7 @@ class VendorController extends \BaseController {
 	 */
 	public function vendorList() {
 		$vendors = Vendor::all();
-		return View::make('Vendor.vendorList')->with(array('title' => 'vendors List', 'vendors' => $vendors));
+		return View::make('Vendor.vendorList')->with(array('title' => 'Vendors List', 'vendors' => $vendors));
 	}
 
 
@@ -119,7 +119,7 @@ class VendorController extends \BaseController {
 
 		if(Auth::user()->getRole() <= 3) {
 
-			$vendor = Vendor::with(array('createdby'))->get();
+			$vendor = Vendor::with(array('createdby'))->where('id', '=', $id)->get();
 
 			if(!$vendor->isEmpty()) {
 				$vendor = $vendor->first();

@@ -85,4 +85,7 @@ $(function () {
 	        }
 	    });
   }
+
+  $('#datepicker').datepicker();
+  
 }(jQuery));
