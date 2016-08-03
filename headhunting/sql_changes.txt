@@ -1,3 +1,14 @@
 RENAME TABLE `headhunting`.`conpany_details` TO `headhunting`.`company_details` ;
 ALTER TABLE `clients` CHANGE `phone` `phone` VARCHAR( 20 ) NULL DEFAULT NULL ;
 ALTER TABLE `vendors` CHANGE `phone` `phone` VARCHAR( 20 ) NULL DEFAULT NULL ;
+ALTER TABLE `candidates` CHANGE `dob` `dob` DATE NULL DEFAULT NULL ;
+ALTER TABLE `cities` CHANGE `zip_code` `zip_code` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER TABLE `candidate_resumes` CHANGE `resume` `resume` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+
+ALTER TABLE `candidate_resumes` DROP FOREIGN KEY `candidate_resumes_ibfk_1` ;
+
+ALTER TABLE `candidate_resumes` ADD CONSTRAINT `candidate_resumes_ibfk_1` FOREIGN KEY ( `candidate_id` ) REFERENCES `headhunting`.`candidates` (
+`id`
+) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `candidates` CHANGE `phone` `phone` VARCHAR( 20 ) NULL DEFAULT NULL ;

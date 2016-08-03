@@ -11,44 +11,40 @@
                   <table id="employeeList" class="table table-bordered table-striped">
                     <thead>
                       <tr>
+                        <th>Full Name</th>
                         <th>Email</th>
-                        <th>Vendor Domain</th>
                         <th>Phone</th>
-                        <th>Is Partner</th>
+                        <th>Visa Id</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-	                    @forelse($vendors as $vendor)
+	                    @forelse($candidates as $candidate)
 		                      <tr>
-                            <td>{{$vendor->email}}</td>
-		                        <td>{{$vendor->vendor_domain}}</td>
-		                        <td>{{$vendor->phone}}</td>
-                            @if($vendor->partner)
-                            <td>Yes</td>
-                            @else
-                            <td>No</td>
-                            @endif
+                            <td>{{$candidate->first_name. " ".$candidate->last_name }}</td>
+                            <td>{{$candidate->email}}</td>
+		                        <td>{{$candidate->phone}}</td>
+		                        <td>{{$candidate->visa->title}}</td>
 		                        <td>
-		                        	<a href="{{ URL::route('view-vendor', array('id' => $vendor->id)) }}" title="View Profile"><i class="fa fa-fw fa-eye"></i></a>
+		                        	<a href="{{ URL::route('view-candidate', array('id' => $candidate->id)) }}" title="View Profile"><i class="fa fa-fw fa-eye"></i></a>
                               @if(Auth::user()->getRole() <= 3)
-		                        	  <a href="{{ URL::route('edit-vendor', array($vendor->id)) }}" title="Edit Profile"><i class="fa fa-fw fa-edit"></i></a>
+		                        	  <a href="{{ URL::route('edit-candidate', array($candidate->id)) }}" title="Edit Profile"><i class="fa fa-fw fa-edit"></i></a>
                               @endif
 		                        	@if(Auth::user()->getRole() <= 3)
-		                        		<a href="{{ URL::route('delete-vendor', array($vendor->id)) }}" title="Delete Profile"><i class="fa fa-fw fa-ban text-danger"></i></a>
+		                        		<a href="{{ URL::route('delete-candidate', array($candidate->id)) }}" title="Delete Profile"><i class="fa fa-fw fa-ban text-danger"></i></a>
 		                        	@endif
 		                        </td>
 		                      </tr>
 	                   	@empty
-	                   		<p>No client</p>
+	                   		<p>No Candidate</p>
 						@endforelse
                     </tbody>
                     <tfoot>
                       <tr>
+                        <th>Full Name</th>
                         <th>Email</th>
-                        <th>Vendor Domain</th>
                         <th>Phone</th>
-                        <th>Is Partner</th>
+                        <th>Visa Id</th>
                         <th>Action</th>
                       </tr>
                     </tfoot>

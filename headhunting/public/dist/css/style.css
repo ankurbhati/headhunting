@@ -41,3 +41,12 @@
 .form-horizontal{
 	margin-top:15px;
 }
+
+.col-sm-8.input-group.date{
+	padding-left: 14px;
+    padding-right: 14px;
+}
+
+.errorlogin{
+	color: #FF0000;
+}
