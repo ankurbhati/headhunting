@@ -105,12 +105,14 @@
 	        </div>
 	    </div>
 	    @if($resume)
-        	<div class="row"><div class="col-sm-4">
-	        Resume:
-	        </div><div class="col-sm-8">
-	        	{{htmlspecialchars_decode($resume->resume)}}
-	        </div>
-	    </div>
+        	<div class="row">
+	        	<div class="col-sm-4">
+			        Resume:
+			    </div>
+			    <div class="col-sm-8">
+			        	{{htmlspecialchars_decode($resume->resume)}}
+			    </div>
+	    	</div>
         @else
         @endif
 	</div>

@@ -40,12 +40,6 @@
             <span class='errorlogin email-login'>{{$errors->first('dob');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
-    <!--<div class="input-group date" data-provide="datepicker">
-        <input type="text" class="form-control">
-        <div class="input-group-addon">
-            <span class="glyphicon glyphicon-th"></span>
-        </div>
-    </div>-->
     <div class="form-group">
         {{ Form::label('Password', 'Password: ', array('class' => 'col-sm-3
         control-label')); }}
@@ -93,7 +87,7 @@
         control-label')); }}
         <div class="col-sm-8">{{ Form::text('city', "", array('class' =>
             'form-control', 'placeholder' => 'Enter Candidates City')); }} 
-            <span class='errorlogin email-login'>{{$errors->first('country_id');}}@if(!empty($message)){{$message}}@endIf</span>
+            <span class='errorlogin email-login'>{{$errors->first('city');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
     <div class="form-group">

@@ -228,21 +228,26 @@ class CandidateController extends \BaseController {
 
 	/**
 	 *
-	 * editVendor() : Edit Vendor
+	 * editCandidate() : Edit Candidate
 	 *
 	 * @return Object : View
 	 *
 	 */
-	public function editVendor($id) {
+	public function editCandidate($id) {
 
 		if(Auth::user()->getRole() <= 3) {
 
-			$vendor = Vendor::with(array('createdby'))->where('id', '=', $id)->get();
+			$country = Country::all()->lists('country', 'id');
+			$visa = Visa::all()->lists('title', 'id');
+			$vendor = Vendor::all()->lists('vendor_domain', 'id');
 
-			if(!$vendor->isEmpty()) {
-				$vendor = $vendor->first();
-				return View::make('Vendor.editVendor')
-						   ->with(array('title' => 'Edit Vendor', 'vendor' => $vendor));
+			$candidate = Candidate::with(array('visa', 'createdby', 'city', 'state', 'country', 'vendor'))->where('id', '=', $id)->get();
+
+			if(!$candidate->isEmpty()) {
+				$candidate = $candidate->first();
+				$resume = CandidateResume::where('candidate_id', $candidate->id)->first();
+				return View::make('Candidate.editCandidate')
+						   ->with(array('title' => 'Edit Candidate', 'candidate' => $candidate, 'resume' => $resume, 'country' => $country, 'visa' => $visa, 'vendor' => $vendor));
 			} else {
 
 				return Redirect::route('dashboard');
