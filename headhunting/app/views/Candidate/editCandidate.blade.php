@@ -2,7 +2,7 @@
 @section('content')
 <div class="content">
 {{ Form::open(array('class' =>
-'form-horizontal','id' => 'login-form',  'method' => 'POST')) }}
+'form-horizontal','id' => 'login-form',  'method' => 'POST', 'enctype' => 'multipart/form-data')) }}
     <div class="form-group">
         {{ Form::label('email', 'E-Mail: ', array('class' => 'col-sm-3
         control-label')); }}

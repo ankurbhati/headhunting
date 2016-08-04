@@ -69,23 +69,23 @@ class CandidateController extends \BaseController {
 			
 			// Server Side Validation.
 			$validate=Validator::make (
-					Input::all(), array(
-							'email' => 'required|email|max:50|email|unique:candidates,email',
-							'first_name' => 'max:50',
-							'last_name' => 'max:50',
-							'phone' => 'max:14',
-							'password' =>  'min:6',
-							'confirm_password' =>  'min:6|same:password',
-							//'dob' => 'required',
-							'city' => 'max:100',
-							'country_id' => 'max:9',
-							'state_id' => 'max:9',
-							'zipcode' => 'max:10',
-							'address' => 'max:247',
-							'ssn' => 'max:247|unique:candidates,ssn',
-							'visa_id' => 'max:1',
-							//'vendor_id' => 'required'
-					)
+				Input::all(), array(
+						'email' => 'required|email|max:50|email|unique:candidates,email',
+						'first_name' => 'max:50',
+						'last_name' => 'max:50',
+						'phone' => 'max:14',
+						'password' =>  'min:6',
+						'confirm_password' =>  'min:6|same:password',
+						//'dob' => 'required',
+						'city' => 'max:100',
+						'country_id' => 'max:9',
+						'state_id' => 'max:9',
+						'zipcode' => 'max:10',
+						'address' => 'max:247',
+						'ssn' => 'max:247|unique:candidates,ssn',
+						'visa_id' => 'max:1',
+						//'vendor_id' => 'required'
+				)
 			);
 	
 			if($validate->fails()) {
@@ -266,7 +266,7 @@ class CandidateController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function updateVendor($id)
+	public function updateCandidate($id)
 	{
 		if(Auth::user()->getRole() <= 3) {
 			Validator::extend('has', function($attr, $value, $params) {
@@ -308,32 +308,132 @@ class CandidateController extends \BaseController {
 			// Server Side Validation.
 			$validate=Validator::make (
 				Input::all(), array(
-						'email' =>  'required|max:50|email|unique:clients,email',
-						'vendor_domain' => 'required|max:50',
+						'email' => 'required|email|max:50|email',
+						'first_name' => 'max:50',
+						'last_name' => 'max:50',
 						'phone' => 'max:14',
-						'partner' => 'max:1'
+						'password' =>  'min:6',
+						'confirm_password' =>  'min:6|same:password',
+						//'dob' => 'required',
+						'city' => 'max:100',
+						'country_id' => 'max:9',
+						'state_id' => 'max:9',
+						'zipcode' => 'max:10',
+						'address' => 'max:247',
+						'ssn' => 'max:247',
+						'visa_id' => 'max:1',
+						//'vendor_id' => 'required'
 				)
 			);
 			if($validate->fails()) {
 				
-				return Redirect::route('edit-vendor', array('id' => $id))
+				return Redirect::route('edit-candidate', array('id' => $id))
 								->withErrors($validate)
 								->withInput();
 			} else {
 
-				$vendor = Vendor::find($id);
-				$vendor->vendor_domain = Input::get('vendor_domain');
-				$vendor->email = Input::get('email');
-				$vendor->phone = Input::get('phone');
-				$vendor->partner = Input::get('partner');
-				$vendor->created_by = Auth::user()->id;
+				$fileType = false;
+				//resume
+				if(isset($_FILES['resume']['tmp_name']) && !empty($_FILES['resume']['tmp_name'])) {
+					list($msg, $fileType) = $this->check_resume_validity();
+					if($msg){
+						# error
+						Session::flash('resume_error', $msg); 
+						return Redirect::route('edit-candidate')->withInput();
+					} else {
+						# No error
+						$resume_upload = true;
+					}
+				}
+				
+				$candidate = Candidate::find($id);
+
+				$email = Input::get('email');
+				if($email && $email != $candidate->email){
+					if(!Candidate::where('email', '=', $email)->get()->isEmpty()) {
+						return Redirect::route('edit-candidate', array('id' => $id))
+						               ->withInput()
+									   ->withErrors(array('email' => "Email is already in use"));
+					}
+					$candidate->email = $email;
+				}
+
+				$ssn = Input::get('ssn');
+				if($ssn != $candidate->ssn){
+					if(!Candidate::where('ssn', '=', $ssn)->get()->isEmpty()) {
+						return Redirect::route('edit-candidate', array('id' => $id))
+						               ->withInput()
+									   ->withErrors(array('ssn' => "ssn is already in use"));
+					}
+				}
+				$candidate->ssn = !empty($ssn) ? $ssn : Null;
+				
+				$candidate->first_name = Input::get('first_name');
+				$candidate->last_name = Input::get('last_name');
+				$candidate->phone = Input::get('phone');
+				$candidate->dob = date('Y-m-d', strtotime(Input::get('dob')));
+				$candidate->country_id = Input::get('country_id');
+				$candidate->state_id = Input::get('state_id');
+				$candidate->zipcode = Input::get('zipcode');
+				$candidate->address = Input::get('address');
+				$candidate->visa_id = Input::get('visa_id');
+				$candidate->vendor_id = Input::get('vendor_id');
+				$candidate->added_by = Auth::user()->id;
+			
+				$city = Input::get('city');
+
+				if(isset($city) && !empty($city)) {
+					$city_record = City::where('name', 'like', $city)->first();
+
+					if($city_record) {
+						$candidate->city_id = $city_record->id;
+					} else {
+
+						$city_obj = new City();
+						$city_obj->name = $city;
+						$city_obj->save();
+						$candidate->city_id = $city_obj->id;
+					}
+
+				}
+
+				$password = Input::get('password');
+				// Changing Password to Hash
+				if(isset($password) && !empty($password)) {
+					$candidate->password = Hash::make($password);
+				}
+
+
 				// Checking Authorised or not
-				if($vendor->save()) {
+				try {
+					if($candidate->save()) {
+						//resume
+						if($fileType) {
+							list($msg, $target_file) = $this->upload_resume($candidate);
+							if($msg) {
+								//error, delete candidate or set flash message
+							} else {
+								$candidate_resume = CandidateResume::where('candidate_id', '=', $candidate->id)->first();
+								if(!$candidate_resume) {
+									print 'In new candidate';
+									$candidate_resume = new CandidateResume();
+								}
+								$candidate_resume->candidate_id = $candidate->id;
+								$candidate_resume->resume = ($fileType == "doc") ? $this->read_doc($target_file) : $this->read_docx($target_file);
+								if(!$candidate_resume->save()){
+									//error, delete candidate or set flash message
+								};
+							}
+						}
+						return Redirect::route('candidate-list');
+					} else {
+					
+						return Redirect::route('edit-candidate')->withInput();
+					}
 
-					return Redirect::route('vendor-list');
-				} else {
-
-					return Redirect::route('edit-client')->withInput();
+				} catch(Exception $e) {
+					
+					return Redirect::route('edit-candidate')->withInput();
 				}
 			}
 		}
