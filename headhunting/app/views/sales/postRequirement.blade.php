@@ -49,13 +49,23 @@
     </div>
     
     <div class="form-group">
-        {{ Form::label('client_name', 'Client Name: ', array('class' => 'col-sm-3
+        {{ Form::label('client_id', 'Client: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::text('client_name', $jobPost->client_name, array('class' =>
-            'form-control', 'placeholder' => 'ex. TCS')); }} 
-            <span class='errorlogin'>{{$errors->first('type_of_employment');}}@if(!empty($message)){{$message}}@endIf</span>
+        <div class="col-sm-8">{{ Form::select('client_id', $client, $jobPost->client_id, array('class' => 'form-control', 'id' => 'client_id')) }} 
+            <span class='errorlogin'>{{$errors->first('client_id');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
+        <input type="hidden" value="" id="state">
     </div>
+
+    <div class="form-group">
+        {{ Form::label('vendor_id', 'Vendor: ', array('class' => 'col-sm-3
+        control-label')); }}
+        <div class="col-sm-8">{{ Form::select('vendor_id', $vendor, $jobPost->vendor_id, array('class' => 'form-control', 'id' => 'vendor_id')) }} 
+            <span class='errorlogin'>{{$errors->first('vendor_id');}}@if(!empty($message)){{$message}}@endIf</span>
+        </div>
+        <input type="hidden" value="" id="state">
+    </div>
+
 	<div class="form-group">
         {{ Form::label('rate', 'Rate/hr: ', array('class' => 'col-sm-3
         control-label')); }}

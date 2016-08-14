@@ -31,11 +31,25 @@ class SaleController extends HelperController {
 		if(Auth::user()->getRole() <= 2) {
 			$jobPost = new JobPost();
 			$country = Country::all();
+			
 			$count = array();
 			foreach( $country as $key => $value) {
 				$count[$value->id] = $value->country;
 			}
-			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost));
+
+			$clients = Client::all();
+			$client = array();
+			foreach( $clients as $key => $value) {
+				$client[$value->id] = $value->first_name."-".$value->email;
+			}
+
+			$vendors = Vendor::all();
+			$vendor = array();
+			foreach( $vendors as $key => $value) {
+				$vendor[$value->id] = $value->vendor_domain."-".$value->email;
+			}
+
+			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost, 'client' => $client, 'vendor' => $vendor));
 		} else {
 			return Redirect::to('dashboard');
 		}
@@ -88,7 +102,7 @@ class SaleController extends HelperController {
 	 *
 	 */
 	public function viewRequirement($id) {
-		$jobPost = JobPost::with(array('country', 'state'))->find($id);
+		$jobPost = JobPost::with(array('country', 'state', 'client', 'vendor', 'city'))->find($id);
 		return View::make('sales.viewRequirement')->with(array('title' => 'View Requirement - Headhunting', 'jobPost' => $jobPost,));
 	}
 
@@ -103,7 +117,7 @@ class SaleController extends HelperController {
 		if($id == 0) {
 			$jobPost = JobPost::all();
 		} else {
-			$jobPost = JobPost::with(array('country', 'state'))->whereHas('jobsAssigned', function($q) use ($id)
+			$jobPost = JobPost::with(array('country', 'state', 'client'))->whereHas('jobsAssigned', function($q) use ($id)
 			{
 			    $q->where('assigned_to_id','=', $id);
 			})->get();

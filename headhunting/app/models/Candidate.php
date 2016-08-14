@@ -76,9 +76,9 @@ class Candidate extends Eloquent {
      *
      * @return Object belongs to Relation candidate & Vendor..
      */
-    public function vendor() {
+    public function workstate() {
     
-    	return $this->belongsTo('Vendor','vendor_id','id');
+    	return $this->belongsTo('WorkStates','work_state_id','id');
     }
 
     /**
