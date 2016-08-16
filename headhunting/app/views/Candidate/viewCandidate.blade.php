@@ -41,19 +41,19 @@
 	    <div class="row"><div class="col-sm-4">
 	        City:
 	        </div><div class="col-sm-8">
-	        	{{$candidate->city->name}}
+	        	@if($candidate->city){{$candidate->city->name}}@else{{"-"}}@endif
 	        </div>
 	    </div>
 	    <div class="row"><div class="col-sm-4">
 	        State:
 	        </div><div class="col-sm-8">
-	        	{{$candidate->state->state}}
+	        	@if($candidate->state){{$candidate->state->state}}@else{{"-"}}@endif
 	        </div>
 	    </div>
 	    <div class="row"><div class="col-sm-4">
 	        Country:
 	        </div><div class="col-sm-8">
-	        	{{$candidate->country->country}}
+	        	@if($candidate->country){{$candidate->country->country}}@else{{"-"}}@endif
 	        </div>
 	    </div>
 	    <div class="row"><div class="col-sm-4">
@@ -75,15 +75,21 @@
 	        </div>
 	    </div>
 	    <div class="row"><div class="col-sm-4">
-	        Visa:
+	        Work State:
 	        </div><div class="col-sm-8">
-	        	{{$candidate->visa->title}}
+	        	@if($candidate->workstate){{$candidate->workstate->title}}@else{{"-"}}@endif
 	        </div>
 	    </div>
 	    <div class="row"><div class="col-sm-4">
-	        Vendor:
+	        Visa:
 	        </div><div class="col-sm-8">
-	        	{{$candidate->vendor->vendor_domain}}
+	        	@if($candidate->visa){{$candidate->visa->title}}@else{{"-"}}@endif
+	        </div>
+	    </div>
+	    <div class="row"><div class="col-sm-4">
+	        Visa Expiry:
+	        </div><div class="col-sm-8">
+	        	{{($candidate->visa_expiry != "" && $candidate->visa_expiry != "0000-00-00")?date("Y-m-d", strtotime($candidate->visa_expiry)):"-"}}
 	        </div>
 	    </div>
 		<div class="row"><div class="col-sm-4">

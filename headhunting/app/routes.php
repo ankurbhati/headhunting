@@ -429,5 +429,13 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'delete-candidate',
 			'uses'    =>    'CandidateController@deleteCandidate'
 	));
+
+	/**
+	 * Routes For REST API for new Employee
+	 */
+	Route::match(array('POST'), '/advance-search', array(
+			'as'    =>    'search-result',
+			'uses'    =>    'SearchController@searchResult'
+	));
 	/** ANKUR BHATI **/
 });

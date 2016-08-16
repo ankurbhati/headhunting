@@ -40,24 +40,7 @@
             <span class='errorlogin email-login'>{{$errors->first('dob');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
-    <div class="form-group">
-        {{ Form::label('Password', 'Password: ', array('class' => 'col-sm-3
-        control-label')); }}
-        <div class="col-sm-8">
-            {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Enter Candidate Password')); }} 
-            <span class='errorlogin password-login'>{{$errors->first('password');}}</span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        {{ Form::label('confirm_password', 'Confirm Password: ', array('class' => 'col-sm-3
-        control-label')); }}
-        <div class="col-sm-8">
-            {{ Form::password('confirm_password', array('class' => 'form-control', 'placeholder' => 'Confirm Password')); }} 
-            <span class='errorlogin password-login'>{{$errors->first('confirm_password');}}</span>
-        </div>
-    </div>
-
+    
     <div class="form-group">
         {{ Form::label('phone', 'Phone: ', array('class' => 'col-sm-3
         control-label')); }}
@@ -115,6 +98,13 @@
         </div>
     </div>
     <div class="form-group">
+        {{ Form::label('work_state_id', 'Work State: ', array('class' => 'col-sm-3
+        control-label')); }}
+        <div class="col-sm-8">{{ Form::select('work_state_id', $work_state, null, array('class' => 'form-control')) }} 
+            <span class='errorlogin email-login'>{{$errors->first('work_state_id');}}@if(!empty($message)){{$message}}@endIf</span>
+        </div>
+    </div>
+    <div class="form-group">
         {{ Form::label('visa_id', 'Visa: ', array('class' => 'col-sm-3
         control-label')); }}
         <div class="col-sm-8">{{ Form::select('visa_id', $visa, null, array('class' => 'form-control')) }} 
@@ -122,10 +112,14 @@
         </div>
     </div>
     <div class="form-group">
-        {{ Form::label('vendor_id', 'Vendor: ', array('class' => 'col-sm-3
+        {{ Form::label('visa_expiry', 'Visa Expiry Date: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::select('vendor_id', $vendor, null, array('class' => 'form-control')) }} 
-            <span class='errorlogin email-login'>{{$errors->first('vendor_id');}}@if(!empty($message)){{$message}}@endIf</span>
+        <div class="col-sm-8 input-group date" data-provide="datepicker">{{ Form::text('visa_expiry', "", array('class' =>
+            'form-control', 'placeholder' => 'Enter Visa Expiry Date')); }} 
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+            <span class='errorlogin email-login'>{{$errors->first('visa_expiry');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
     <div class="form-group">

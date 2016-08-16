@@ -17,6 +17,9 @@
  * @package    CandidateResume
  *
  */
+use Elasticquent\ElasticquentTrait;
+
+
 class CandidateResume extends Eloquent {
 
     /**
@@ -24,5 +27,42 @@ class CandidateResume extends Eloquent {
      *
      * @var string
      */
+    use ElasticquentTrait;
+
     protected $table = 'candidate_resumes';
+
+    public $fillable = ['candidate_id', 'resume'];
+
+	protected $mappingProperties = array(
+	'candidate_id' => [
+	  'type' => 'integer',
+	  #"analyzer" => "standard",
+	],
+	'resume' => [
+	  'type' => 'string',
+	  "analyzer" => "standard",
+	]
+	);
+	/*
+	php artisan tinker
+	
+	CandidateResume::createIndex($shards = null, $replicas = null);
+
+	CandidateResume::putMapping($ignoreConflicts = true);
+
+	CandidateResume::addAllToIndex();
+
+	*/
+
+	/**
+     *
+     * countries : Relation between User & country.
+     *
+     * @return Object belongs to Relation User Country.
+     */
+    public function candidate() {
+    
+    	return $this->belongsTo('Candidate','candidate_id','id');
+    }
+ 
 }

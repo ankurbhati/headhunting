@@ -15,6 +15,7 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Visa Id</th>
+                        <th>Visa Expiry</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -25,6 +26,7 @@
                             <td>{{$candidate->email}}</td>
 		                        <td>{{$candidate->phone}}</td>
 		                        <td>{{$candidate->visa->title}}</td>
+                            <td>{{$candidate->visa_expiry}}</td>
 		                        <td>
 		                        	<a href="{{ URL::route('view-candidate', array('id' => $candidate->id)) }}" title="View Profile"><i class="fa fa-fw fa-eye"></i></a>
                               @if(Auth::user()->getRole() <= 3)
@@ -45,6 +47,7 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Visa Id</th>
+                        <th>Visa Expiry</th>
                         <th>Action</th>
                       </tr>
                     </tfoot>

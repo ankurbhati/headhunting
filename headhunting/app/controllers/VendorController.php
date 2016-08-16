@@ -81,7 +81,7 @@ class VendorController extends \BaseController {
 				$vendor->vendor_domain = Input::get('vendor_domain');
 				$vendor->email = Input::get('email');
 				$vendor->phone = Input::get('phone');
-				$vendor->partner = Input::get('partner');
+				$vendor->partner = !empty(Input::get('partner')) ? Input::get('partner') : 0;
 				$vendor->created_by = Auth::user()->id;
 
 				// Checking Authorised or not
@@ -227,10 +227,20 @@ class VendorController extends \BaseController {
 			} else {
 
 				$vendor = Vendor::find($id);
+
+				$email = Input::get('email');
+				if($email && $email != $vendor->email){
+					if(!Vendor::where('email', '=', $email)->get()->isEmpty()) {
+						return Redirect::route('edit-vendor', array('id' => $id))
+						               ->withInput()
+									   ->withErrors(array('email' => "Email is already in use"));
+					}
+					$vendor->email = $email;
+				}
+				
 				$vendor->vendor_domain = Input::get('vendor_domain');
-				$vendor->email = Input::get('email');
 				$vendor->phone = Input::get('phone');
-				$vendor->partner = Input::get('partner');
+				$vendor->partner = !empty(Input::get('partner')) ? Input::get('partner') : 0;
 				$vendor->created_by = Auth::user()->id;
 				// Checking Authorised or not
 				if($vendor->save()) {

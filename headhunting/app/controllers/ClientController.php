@@ -243,16 +243,26 @@ class ClientController extends \BaseController {
 			} else {
 
 				$client = Client::find($id);
+
+				$email = Input::get('email');
+				if($email && $email != $client->email){
+					if(!Client::where('email', '=', $email)->get()->isEmpty()) {
+						return Redirect::route('edit-client', array('id' => $id))
+						               ->withInput()
+									   ->withErrors(array('email' => "Email is already in use"));
+					}
+					$client->email = $email;
+				}
+
 				$client->first_name = Input::get('first_name');
 				$client->last_name = Input::get('last_name');
-				$client->email = Input::get('email');
 				$client->phone = Input::get('phone');
 				$client->company_id = Input::get('company');
 
 				// Checking Authorised or not
 				if($client->save()) {
 
-					return Redirect::route('dashboard-view');
+					return Redirect::route('client-list');
 				} else {
 
 					return Redirect::route('edit-client')->withInput();

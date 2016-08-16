@@ -81,4 +81,37 @@ class JobPost extends Eloquent {
     
     	return $this->hasMany('JobPostAssignment','job_post_id','id')->where('assigned_to_id', '=', Auth::user()->id);
     }
+
+    /**
+     *
+     * client : Relation between Client & Job Posts.
+     *
+     * @return Object belongs to Relation User Job Posts.
+     */
+    public function client() {
+    
+        return $this->belongsTo('Client','client_id','id');
+    }
+
+    /**
+     *
+     * vendor : Relation between Vendor & Job Posts.
+     *
+     * @return Object belongs to Relation User Job Posts.
+     */
+    public function vendor() {
+    
+        return $this->belongsTo('Vendor','vendor_id','id');
+    }
+
+    /**
+     *
+     * countries : Relation between Job Posts & country.
+     *
+     * @return Object belongs to Relation User Country.
+     */
+    public function city() {
+    
+        return $this->belongsTo('City','city_id','id');
+    }
 }

@@ -11,11 +11,19 @@
 	        </div>
 	    </div>
 			<div class="row"><div class="col-sm-4">
-					Client Name:
+					Client:
 					</div><div class="col-sm-8">
-						{{$jobPost->client_name}}
+						{{$jobPost->client->first_name."-".$jobPost->client->email}}
 					</div>
 			</div>
+			<div class="row">
+				<div class="col-sm-4">
+		        Vendor:
+		        </div>
+		        <div class="col-sm-8">
+					{{$jobPost->vendor->vendor_domain."-".$jobPost->vendor->email}}
+	    	    </div>
+	    	</div>
 			<div class="row"><div class="col-sm-4">
 					Rate:
 					</div><div class="col-sm-8">
@@ -25,7 +33,7 @@
 	    <div class="row"><div class="col-sm-4">
 	        City:
 	        </div><div class="col-sm-8">
-							{{$jobPost->city}}
+					{{$jobPost->city->name}}
 	        </div>
 	    </div>
 	    <div class="row"><div class="col-sm-4">
@@ -34,12 +42,6 @@
 						{{$jobPost->state->state}}
 	        </div>
 	    </div>
-			<div class="row"><div class="col-sm-4">
-					Country:
-					</div><div class="col-sm-8">
-						{{$jobPost->country->country}}
-					</div>
-			</div>
 			<div class="row"><div class="col-sm-4">
 					Country:
 					</div><div class="col-sm-8">
