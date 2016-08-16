@@ -44,7 +44,7 @@
     <div class="form-group">
         {{ Form::label('city', 'City:', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::text('city',$jobPost->city, array('class' => 'form-control', 'placeholder' => 'Enter City')); }} 
+        <div class="col-sm-8">{{ Form::text('city',$jobPost->city->name, array('class' => 'form-control', 'placeholder' => 'Enter City')); }} 
         </div>
     </div>
     
@@ -54,7 +54,6 @@
         <div class="col-sm-8">{{ Form::select('client_id', $client, $jobPost->client_id, array('class' => 'form-control', 'id' => 'client_id')) }} 
             <span class='errorlogin'>{{$errors->first('client_id');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
-        <input type="hidden" value="" id="state">
     </div>
 
     <div class="form-group">
@@ -63,7 +62,6 @@
         <div class="col-sm-8">{{ Form::select('vendor_id', $vendor, $jobPost->vendor_id, array('class' => 'form-control', 'id' => 'vendor_id')) }} 
             <span class='errorlogin'>{{$errors->first('vendor_id');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
-        <input type="hidden" value="" id="state">
     </div>
 
 	<div class="form-group">

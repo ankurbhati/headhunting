@@ -142,10 +142,11 @@ class SaleController extends HelperController {
 					Input::all(), array(
 							'title' =>  'required|max:50',
 							'type_of_employment' => 'required|numeric',
-							'client_name' => 'required|max:50',
 							'country_id' => 'required',
 							'state_id' =>  'required',
 							'description' =>  'required|max:1000',
+							'client_id' => 'required',
+							'vendor_id' => 'required'
 					)
 			);
 
@@ -156,12 +157,30 @@ class SaleController extends HelperController {
 								->withInput();
 			} else {
 
-				$inputs = Input::except(array('_token', '_wysihtml5_mode'));
+				$inputs = Input::except(array('_token', '_wysihtml5_mode', 'city'));
 				$jobPost = new JobPost();
 				$jobPost->setConnection('master');
 				foreach($inputs as $key => $value) {
 					$jobPost->$key = $value;
 				}
+
+				$city = Input::get('city');
+
+				if(isset($city) && !empty($city)) {
+					$city_record = City::where('name', 'like', $city)->first();
+
+					if($city_record) {
+						$jobPost->city_id = $city_record->id;
+					} else {
+
+						$city_obj = new City();
+						$city_obj->name = $city;
+						$city_obj->save();
+						$jobPost->city_id = $city_obj->id;
+					}
+
+				}
+
 				$jobPost->created_by = Auth::user()->id;
 				$jobPost->status = 2;
 
@@ -193,10 +212,11 @@ class SaleController extends HelperController {
 					Input::all(), array(
 							'title' =>  'required|max:50',
 							'type_of_employment' => 'required|numeric',
-							'client_name' => 'required|max:50',
 							'country_id' => 'required',
 							'state_id' =>  'required',
 							'description' =>  'required|max:1000',
+							'client_id' => 'required',
+							'vendor_id' => 'required'
 					)
 			);
 
@@ -207,10 +227,27 @@ class SaleController extends HelperController {
 				->withInput();
 			} else {
 
-				$inputs = Input::except(array('_token', '_wysihtml5_mode', 'status', 'created_by'));
+				$inputs = Input::except(array('_token', '_wysihtml5_mode', 'status', 'city', 'created_by'));
 				$jobPost->setConnection('master');
 				foreach($inputs as $key => $value) {
 					$jobPost->$key = $value;
+				}
+
+				$city = Input::get('city');
+
+				if(isset($city) && !empty($city)) {
+					$city_record = City::where('name', 'like', $city)->first();
+
+					if($city_record) {
+						$jobPost->city_id = $city_record->id;
+					} else {
+
+						$city_obj = new City();
+						$city_obj->name = $city;
+						$city_obj->save();
+						$jobPost->city_id = $city_obj->id;
+					}
+
 				}
 				$jobPost->created_by = Auth::user()->id;
 				$jobPost->status = $jobPost->status;
@@ -242,7 +279,20 @@ class SaleController extends HelperController {
 			foreach( $country as $key => $value) {
 				$count[$value->id] = $value->country;
 			}
-			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost));
+
+			$clients = Client::all();
+			$client = array();
+			foreach( $clients as $key => $value) {
+				$client[$value->id] = $value->first_name."-".$value->email;
+			}
+
+			$vendors = Vendor::all();
+			$vendor = array();
+			foreach( $vendors as $key => $value) {
+				$vendor[$value->id] = $value->vendor_domain."-".$value->email;
+			}
+
+			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost, 'client' => $client, 'vendor' => $vendor));
 		} else {
 			return Redirect::to('dashboard');
 		}

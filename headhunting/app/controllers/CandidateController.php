@@ -16,9 +16,11 @@ class CandidateController extends \BaseController {
 	{
 		$country = Country::all()->lists('country', 'id');
 		$visa = Visa::all()->lists('title', 'id');
-		$vendor = Vendor::all()->lists('vendor_domain', 'id');
+		//$vendor = Vendor::all()->lists('vendor_domain', 'id');
+		$work_states = WorkStates::all()->lists('title', 'id');
 
-		return View::make('Candidate.newCandidate')->with(array('title' => 'Add Candidate', 'country' => $country, 'visa' => $visa, 'vendor' => $vendor));
+		return View::make('Candidate.newCandidate')->with(array('title' => 'Add Candidate', 'country' => $country, 'visa' => $visa//, 'vendor' => $vendor
+			, 'work_state' => $work_states));
 	}
 
 
@@ -74,8 +76,8 @@ class CandidateController extends \BaseController {
 						'first_name' => 'max:50',
 						'last_name' => 'max:50',
 						'phone' => 'max:14',
-						'password' =>  'min:6',
-						'confirm_password' =>  'min:6|same:password',
+						//'password' =>  'min:6',
+						//'confirm_password' =>  'min:6|same:password',
 						//'dob' => 'required',
 						'city' => 'max:100',
 						'country_id' => 'max:9',
@@ -83,7 +85,7 @@ class CandidateController extends \BaseController {
 						'zipcode' => 'max:10',
 						'address' => 'max:247',
 						'ssn' => 'max:247|unique:candidates,ssn',
-						'visa_id' => 'max:1',
+						'visa_id' => 'max:1'
 						//'vendor_id' => 'required'
 				)
 			);
@@ -122,7 +124,9 @@ class CandidateController extends \BaseController {
 				$candidate->address = Input::get('address');
 				$candidate->ssn = !empty($ssn) ? $ssn : Null;
 				$candidate->visa_id = Input::get('visa_id');
-				$candidate->vendor_id = Input::get('vendor_id');
+				$candidate->work_state_id = Input::get('work_state_id');
+				$candidate->visa_expiry = date('Y-m-d', strtotime(Input::get('visa_expiry')));
+				//$candidate->vendor_id = Input::get('vendor_id');
 				$candidate->added_by = Auth::user()->id;
 				
 				$city = Input::get('city');
@@ -142,11 +146,11 @@ class CandidateController extends \BaseController {
 
 				}
 
-				$password = Input::get('password');
+				/*$password = Input::get('password');
 				// Changing Password to Hash
 				if(isset($password) && !empty($password)) {
 					$candidate->password = Hash::make($password);
-				}
+				}*/
 
 
 				// Checking Authorised or not
@@ -208,7 +212,7 @@ class CandidateController extends \BaseController {
 
 		if(Auth::user()->getRole() <= 3) {
 
-			$candidate = Candidate::with(array('visa', 'createdby', 'city', 'state', 'country', 'vendor'))->where('id', '=', $id)->get();
+			$candidate = Candidate::with(array('visa', 'createdby', 'city', 'state', 'country', 'workstate'))->where('id', '=', $id)->get();
 
 			if(!$candidate->isEmpty()) {
 				$candidate = $candidate->first();
@@ -239,15 +243,20 @@ class CandidateController extends \BaseController {
 
 			$country = Country::all()->lists('country', 'id');
 			$visa = Visa::all()->lists('title', 'id');
-			$vendor = Vendor::all()->lists('vendor_domain', 'id');
+			$work_states = WorkStates::all()->lists('title', 'id');
+			//$vendor = Vendor::all()->lists('vendor_domain', 'id');
 
-			$candidate = Candidate::with(array('visa', 'createdby', 'city', 'state', 'country', 'vendor'))->where('id', '=', $id)->get();
+			$candidate = Candidate::with(array('visa', 'createdby', 'city', 'state', 'country', 'workstate'))->where('id', '=', $id)->get();
 
 			if(!$candidate->isEmpty()) {
 				$candidate = $candidate->first();
 				$resume = CandidateResume::where('candidate_id', $candidate->id)->first();
 				return View::make('Candidate.editCandidate')
-						   ->with(array('title' => 'Edit Candidate', 'candidate' => $candidate, 'resume' => $resume, 'country' => $country, 'visa' => $visa, 'vendor' => $vendor));
+						   ->with(
+						   		array('title' => 'Edit Candidate', 'candidate' => $candidate, 'resume' => $resume, 'country' => $country, 'visa' => $visa,
+						   			'work_state' => $work_states
+						   			//, 'vendor' => $vendor
+				));
 			} else {
 
 				return Redirect::route('dashboard');
@@ -312,8 +321,8 @@ class CandidateController extends \BaseController {
 						'first_name' => 'max:50',
 						'last_name' => 'max:50',
 						'phone' => 'max:14',
-						'password' =>  'min:6',
-						'confirm_password' =>  'min:6|same:password',
+						//'password' =>  'min:6',
+						//'confirm_password' =>  'min:6|same:password',
 						//'dob' => 'required',
 						'city' => 'max:100',
 						'country_id' => 'max:9',
@@ -377,7 +386,9 @@ class CandidateController extends \BaseController {
 				$candidate->zipcode = Input::get('zipcode');
 				$candidate->address = Input::get('address');
 				$candidate->visa_id = Input::get('visa_id');
-				$candidate->vendor_id = Input::get('vendor_id');
+				$candidate->work_state_id = Input::get('work_state_id');
+				$candidate->visa_expiry = date('Y-m-d', strtotime(Input::get('visa_expiry')));
+				//$candidate->vendor_id = Input::get('vendor_id');
 				$candidate->added_by = Auth::user()->id;
 			
 				$city = Input::get('city');
@@ -397,11 +408,11 @@ class CandidateController extends \BaseController {
 
 				}
 
-				$password = Input::get('password');
+				/*$password = Input::get('password');
 				// Changing Password to Hash
 				if(isset($password) && !empty($password)) {
 					$candidate->password = Hash::make($password);
-				}
+				}*/
 
 
 				// Checking Authorised or not

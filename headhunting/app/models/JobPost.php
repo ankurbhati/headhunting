@@ -104,4 +104,14 @@ class JobPost extends Eloquent {
         return $this->belongsTo('Vendor','vendor_id','id');
     }
 
+    /**
+     *
+     * countries : Relation between Job Posts & country.
+     *
+     * @return Object belongs to Relation User Country.
+     */
+    public function city() {
+    
+        return $this->belongsTo('City','city_id','id');
+    }
 }
