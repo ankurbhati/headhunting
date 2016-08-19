@@ -99,8 +99,9 @@ class CandidateController extends \BaseController {
 				$fileType = false;
 				//resume
 				if(isset($_FILES['resume']['tmp_name']) && !empty($_FILES['resume']['tmp_name'])) {
-					
+
 					list($msg, $fileType) = $this->check_resume_validity();
+
 					if($msg){
 						# error
 						Session::flash('resume_error', $msg); 
@@ -165,6 +166,8 @@ class CandidateController extends \BaseController {
 								$candidate_resume = new CandidateResume();
 								$candidate_resume->candidate_id = $candidate->id;
 								$candidate_resume->resume = ($fileType == "doc") ? $this->read_doc($target_file) : $this->read_docx($target_file);
+								$tmp = explode("/", $target_file);
+								$candidate_resume->resume_path = end($tmp);
 								if(!$candidate_resume->save()){
 									//error, delete candidate or set flash message
 								};
@@ -190,13 +193,17 @@ class CandidateController extends \BaseController {
 
 	/**
 	 *
-	 * vendorList() : Vendor List
+	 * candidateList() : Candidate List
 	 *
 	 * @return Object : View
 	 *
 	 */
 	public function candidateList() {
-		$candidates = Candidate::all();
+		#$candidates = Candidate::all();
+		$candidates = Candidate::leftJoin('candidate_resumes', function($join) {
+	      $join->on('candidates.id', '=', 'candidate_resumes.candidate_id');
+	    })
+	    ->select('candidates.*', 'candidate_resumes.resume', 'candidate_resumes.resume_path')->get();
 		return View::make('Candidate.candidateList')->with(array('title' => 'Candidates List', 'candidates' => $candidates));
 	}
 
@@ -426,16 +433,18 @@ class CandidateController extends \BaseController {
 							} else {
 								$candidate_resume = CandidateResume::where('candidate_id', '=', $candidate->id)->first();
 								if(!$candidate_resume) {
-									print 'In new candidate';
 									$candidate_resume = new CandidateResume();
 								}
 								$candidate_resume->candidate_id = $candidate->id;
 								$candidate_resume->resume = ($fileType == "doc") ? $this->read_doc($target_file) : $this->read_docx($target_file);
+								$tmp = explode("/", $target_file);
+								$candidate_resume->resume_path = end($tmp);
 								if(!$candidate_resume->save()){
 									//error, delete candidate or set flash message
 								};
 							}
 						}
+
 						return Redirect::route('candidate-list');
 					} else {
 					
@@ -443,7 +452,7 @@ class CandidateController extends \BaseController {
 					}
 
 				} catch(Exception $e) {
-					
+
 					return Redirect::route('edit-candidate')->withInput();
 				}
 			}
@@ -480,7 +489,7 @@ class CandidateController extends \BaseController {
             }
         }
 
-        return $outtext;
+        return htmlspecialchars_decode($outtext);
         //return $striped_content(htmlspecialchars_decode($outtext));
 	}
 
@@ -499,8 +508,9 @@ class CandidateController extends \BaseController {
 
             if (zip_entry_name($zip_entry) != "word/document.xml") continue;
 
-            $content .= zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
-            //$content = $content.zip_entry_read($zip_entry, zip_entry_filesize($zip_entry))."<br />";
+
+            //$content .= zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+            $content = $content.zip_entry_read($zip_entry, zip_entry_filesize($zip_entry))."<br />";
 
             zip_entry_close($zip_entry);
         }// end while
@@ -508,10 +518,13 @@ class CandidateController extends \BaseController {
         zip_close($zip);
 
         $content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
-        $content = str_replace('</w:r></w:p>', "\r\n", $content);
-        $striped_content = strip_tags($content);
-        
-        return $striped_content;
+
+        //$content = str_replace('</w:r></w:p>', "\r\n", $content);
+        $content = str_replace('</w:r></w:p>', "\r<br />", $content);
+        #$striped_content = strip_tags($content);
+
+		return $content;        
+        #return $striped_content;
     }
 
 
@@ -534,8 +547,9 @@ class CandidateController extends \BaseController {
 
 	private function upload_resume($candidate) {
 		$msg = false;
+		$fileType = pathinfo($_FILES["resume"]["name"],PATHINFO_EXTENSION);
 		$target_dir = DOCROOT.$this->resume_target_dir.$candidate->id.'/';
-		$target_file = $target_dir . basename($_FILES["resume"]["name"]);
+		$target_file = $target_dir . uniqid() . "." . $fileType;
 
 		if (!is_dir($target_dir)) {
 			mkdir($target_dir, 0777, true);

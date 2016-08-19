@@ -12,10 +12,6 @@ class ClientController extends \BaseController {
 	{
 		//$company = CompanyDetail::all();
 		$companies = CompanyDetail::all()->lists('company_name', 'id');
-		//$companies = array();
-		//foreach( $company as $key => $value) {
-		//	$companies[$value->id] = $value->company_name;
-		//}
 
 		return View::make('Client.newClient')->with(array('title' => 'Add Client', 'companies' => $companies));
 	}

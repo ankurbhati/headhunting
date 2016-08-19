@@ -42,3 +42,6 @@ ALTER TABLE job_posts ADD CONSTRAINT fk_vendor_id FOREIGN KEY ( vendor_id ) REFE
 ALTER TABLE `job_posts` CHANGE `city` `city_id` INT( 11 ) NULL DEFAULT NULL ;
 ALTER TABLE `cities` CHANGE `id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ;
 ALTER TABLE job_posts ADD CONSTRAINT fk_city_id FOREIGN KEY ( city_id ) REFERENCES cities( id );
+
+
+ALTER TABLE `candidate_resumes` ADD `resume_path` VARCHAR( 255 ) NOT NULL AFTER `resume` ;

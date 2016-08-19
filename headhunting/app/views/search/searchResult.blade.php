@@ -18,9 +18,12 @@
                     <tbody>
 	                    @forelse($candidate_resumes as $candidate)
 		                      <tr>
-                            <td>{{$candidate->resume}}</td>
+                            <td>{{substr($candidate->resume, 0, 100)."..."}}</td>
 		                        <td>
 		                        	<a href="{{ URL::route('view-candidate', array('id' => $candidate->candidate->id)) }}" title="View Profile"><i class="fa fa-fw fa-eye"></i></a>
+                              @if(Auth::user()->getRole() <= 3)
+                              <a href="{{'/uploads/resumes/'.$candidate->candidate->id.'/'.$candidate->resume_path}}" title="Download Resume"><i class="glyphicon glyphicon-download"></i></a>
+                              @endif
 		                        </td>
 		                      </tr>
 	                   	@empty

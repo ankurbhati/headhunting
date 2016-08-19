@@ -113,6 +113,17 @@
 	    @if($resume)
         	<div class="row">
 	        	<div class="col-sm-4">
+			        Download Resume:
+			    </div>
+			    <div class="col-sm-8">
+			        <a href="{{'/uploads/resumes/'.$resume->candidate_id.'/'.$resume->resume_path}}" title="Download Resume"><i class="glyphicon glyphicon-download"></i></a>
+			    </div>
+	    	</div>
+        @else
+        @endif
+	    @if($resume)
+        	<div class="row">
+	        	<div class="col-sm-4">
 			        Resume:
 			    </div>
 			    <div class="col-sm-8">

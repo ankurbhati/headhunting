@@ -92,4 +92,14 @@ class Candidate extends Eloquent {
     	return $this->belongsTo('User','added_by','id');
     }
 
+    /**
+     *
+     * countries : Relation between candidate & its resume.
+     *
+     * @return Object belongs to Relation candidate & its resume..
+     */
+    public function candidateresume() {
+    
+        return $this->hasOne('CandidateResume','candidate_id','id');
+    }
 }

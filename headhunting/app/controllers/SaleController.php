@@ -5,17 +5,17 @@
  * This file contatins controller class to provide APIs for Users
  *
  * @category   Controller
- * @package    User Management
+ * @package    Sale Management
  * @version    SVN: <svn_id>
  * @since      29th May 2014
  *
  */
 
 /**
- * Contrller class will be responsible for All User management Related Actions
+ * Contrller class will be responsible for All Sale management Related Actions
  *
  * @category   Controller
- * @package    User Management
+ * @package    Sale Management
  *
  */
 class SaleController extends HelperController {
@@ -80,9 +80,10 @@ class SaleController extends HelperController {
 			return Redirect::to('dashboard')->with(array("message" => "error"));
 		}
 	}
+
 	/**
 	 *
-	 * listRequirement() : listRequirement
+	 * deleteRequirement() : deleteRequirement
 	 *
 	 * @return Object : View
 	 *
