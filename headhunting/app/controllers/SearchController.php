@@ -42,10 +42,6 @@ class SearchController extends HelperController {
 	public function searchResult() {
 
 		if($query = Input::get('query', false)) {
-			#print $query;
-			#print exec("curl -XGET 'http://localhost:9200/default/candidate_resumes/_search?fields=_source%2C_timestamp'", $out, $st);
-			#print_r($out);
-			#print $st;
 		    // Use the Elasticquent search method to search ElasticSearch
 		    try{
 		    	$candidate_resumes = CandidateResume::searchByQuery(['match' => ['resume' => $query]]);

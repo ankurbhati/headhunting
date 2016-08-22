@@ -27,13 +27,18 @@ class CandidateResume extends Eloquent {
      *
      * @var string
      */
+
     use ElasticquentTrait;
 
     protected $table = 'candidate_resumes';
 
-    public $fillable = ['candidate_id', 'resume'];
+    public $fillable = ['id', 'candidate_id', 'resume', "resume_path"];
 
 	protected $mappingProperties = array(
+	'id' => [
+	  'type' => 'integer',
+	  #"analyzer" => "standard",
+	],
 	'candidate_id' => [
 	  'type' => 'integer',
 	  #"analyzer" => "standard",
@@ -41,17 +46,18 @@ class CandidateResume extends Eloquent {
 	'resume' => [
 	  'type' => 'string',
 	  "analyzer" => "standard",
+	],
+	'resume_path' => [
+	  'type' => 'string',
+	  "analyzer" => "standard",
 	]
 	);
+
 	/*
 	php artisan tinker
-	
 	CandidateResume::createIndex($shards = null, $replicas = null);
-
 	CandidateResume::putMapping($ignoreConflicts = true);
-
 	CandidateResume::addAllToIndex();
-
 	*/
 
 	/**

@@ -171,6 +171,7 @@ class CandidateController extends \BaseController {
 								if(!$candidate_resume->save()){
 									//error, delete candidate or set flash message
 								};
+								$candidate_resume->addToIndex();
 							}
 						}
 						return Redirect::route('candidate-list');
@@ -180,7 +181,7 @@ class CandidateController extends \BaseController {
 					}
 
 				} catch(Exception $e) {
-					
+					print $e->getMessage();exit;
 					return Redirect::route('add-candidate')->withInput();
 				}
 
@@ -431,17 +432,22 @@ class CandidateController extends \BaseController {
 							if($msg) {
 								//error, delete candidate or set flash message
 							} else {
+								$resume_obj = '';
 								$candidate_resume = CandidateResume::where('candidate_id', '=', $candidate->id)->first();
 								if(!$candidate_resume) {
+									$resume_obj = "new";
 									$candidate_resume = new CandidateResume();
 								}
 								$candidate_resume->candidate_id = $candidate->id;
 								$candidate_resume->resume = ($fileType == "doc") ? $this->read_doc($target_file) : $this->read_docx($target_file);
 								$tmp = explode("/", $target_file);
 								$candidate_resume->resume_path = end($tmp);
+
 								if(!$candidate_resume->save()){
 									//error, delete candidate or set flash message
 								};
+
+								($resume_obj == "new") ? $candidate_resume->addToIndex() : $candidate_resume->reindex();
 							}
 						}
 
@@ -469,7 +475,9 @@ class CandidateController extends \BaseController {
 	 */
 	public function deleteCandidate($id) {
 		if(Auth::user()->getRole() <= 3) {
-			if(Candidate::find($id)->delete()) {
+			$candidate = Candidate::find($id);
+			$resume = CandidateResume::where('candidate_id', $candidate->id)->first();
+			if($resume->removeFromIndex() && $resume->delete() && $candidate->delete()) {
 				return Redirect::route('candidate-list');
 			}
 		}

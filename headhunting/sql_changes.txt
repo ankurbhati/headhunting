@@ -45,3 +45,4 @@ ALTER TABLE job_posts ADD CONSTRAINT fk_city_id FOREIGN KEY ( city_id ) REFERENC
 
 
 ALTER TABLE `candidate_resumes` ADD `resume_path` VARCHAR( 255 ) NOT NULL AFTER `resume` ;
+ALTER TABLE `candidate_resumes` ADD UNIQUE (`candidate_id`);
