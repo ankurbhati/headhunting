@@ -44,6 +44,7 @@ class SearchController extends HelperController {
 		if($query = Input::get('query', false)) {
 		    // Use the Elasticquent search method to search ElasticSearch
 		    try{
+		    	$query = str_ireplace(" and ", " ", $query);
 		    	$candidate_resumes = CandidateResume::searchByQuery(['match' => ['resume' => $query]]);
 		    }catch(Exception $e){
 		    	print $e->getMessage();
