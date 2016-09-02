@@ -621,4 +621,102 @@ class UserController extends HelperController {
 			}
 		}
 	}
+
+	/**
+	 *
+	 * mass_mail() : mass mail view
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function massMail() {
+
+		if (Request::isMethod('post')) {
+			Validator::extend('has', function($attr, $value, $params) {
+	
+				if(!count($params)) {
+	
+					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
+				}
+	
+				foreach ($params as $param) {
+					switch ($param) {
+						case 'num':
+							$regex = '/\pN/';
+							break;
+						case 'letter':
+							$regex = '/\pL/';
+							break;
+						case 'lower':
+							$regex = '/\p{Ll}/';
+							break;
+						case 'upper':
+							$regex = '/\p{Lu}/';
+							break;
+						case 'special':
+							$regex = '/[\pP\pS]/';
+							break;
+						default:
+							$regex = $param;
+					}
+	
+					if(! preg_match($regex, $value)) {
+						return false;
+					}
+				}
+	
+				return true;
+			});
+	
+			// Server Side Validation.
+			$validate=Validator::make (
+				Input::all(), array(
+						'mail_group_id' =>  'required',
+						'description' => 'required'
+				)
+			);
+	
+			if($validate->fails()) {
+				return Redirect::to('mass-mail')
+							   ->withErrors($validate)
+							   ->withInput();
+			} else {
+				$mass_mail = new MassMail();
+				$mass_mail->mail_group_id = Input::get('mail_group_id');
+				$mass_mail->description = Input::get('description');
+				if($mass_mail->save()) {
+					return Redirect::route('dashboard-view');
+				} else {
+					return Redirect::route('mass-mail')->withInput();
+				}
+			}
+		} else {
+			$mail_groups = MailGroup::all()->lists('name', 'id');
+			return View::make('User.massMail')->with(array('title' => 'Mass Mail', 'mail_groups'=> $mail_groups));
+		}
+	}
+
+
+	/**
+	 *
+	 * sendMailFromCron() : sendMailFromCron
+	 *
+	 * @return Object : 
+	 *
+	 */
+	public function sendMailFromCron() {
+		$mass_mails = MassMail::with(array('mailgroup'))->where('status', '=', '1')->get();
+		foreach($mass_mails as $mass_mail) {
+			//$mass_mail->status = 2;
+			//$mass_mail->save();
+			$model = $mass_mail->mailgroup->model;
+			$users = MailGroupMember::where('group_id', '=', $mass_mail->mailgroup->id)->lists('user_id');
+			$user_list = $model::whereIn('id', $users)->get();
+			foreach($user_list as $user) {
+				print $user->email;
+				// send mail to this user
+			}
+		}
+	}
+
 }

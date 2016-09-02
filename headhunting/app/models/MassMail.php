@@ -25,4 +25,15 @@ class MassMail extends Eloquent {
      * @var string
      */
     protected $table = 'mass_mails';
+
+    /**
+     *
+     * countries : Relation between mail_mass & mail_group.
+     *
+     * @return Object belongs to Relation mail_mass mail_group.
+     */
+    public function mailgroup() {
+    
+    	return $this->belongsTo('MailGroup','mail_group_id','id');
+    }
 }

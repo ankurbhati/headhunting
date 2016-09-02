@@ -437,5 +437,29 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'search-result',
 			'uses'    =>    'SearchController@searchResult'
 	));
+
+	/**
+	 * Routes For GET API for mass mail
+	 */
+	Route::match(array('GET'), '/mass-mail/', array(
+			'as'    =>    'mass-mail',
+			'uses'    =>    'UserController@massMail'
+	));
+
+	/**
+	 * Routes For POST API for mass mail
+	 */
+	Route::match(array('POST'), '/mass-mail/', array(
+			'as'    =>    'mass-mail',
+			'uses'    =>    'UserController@massMail'
+	));
+
+	/**
+	 * Routes For REST API forsendMailFromCron
+	 */
+	Route::match(array('GET'), '/send-mail-from-cron', array(
+			'as'    =>    'send-mail-from-cron',
+			'uses'    =>    'UserController@sendMailFromCron'
+	));
 	/** ANKUR BHATI **/
 });

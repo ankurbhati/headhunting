@@ -150,7 +150,7 @@ class ClientController extends \BaseController {
 	public function editClient($id) {
 
 		if(Auth::user()->getRole() <= 3) {
-			$companies = CompanyDetail::all()->lists('company_name', 'id');	
+			$companies = CompanyDetail::all()->lists('company_name', 'id');
 			/*
 			$company = CompanyDetail::all();
 			$companies = array();
