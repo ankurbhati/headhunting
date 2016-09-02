@@ -48,6 +48,14 @@ Route::group(array('before' => 'auth'), function() {
 	));
 
 	/**
+	 * Routes for post-requirement
+	 */
+	Route::match(array('POST'), '/get-mail-groups', array(
+			'as'    =>    'get-mail-groups',
+			'uses'    =>    'HomeController@getMailGroups'
+	));
+
+	/**
 	 * Routes For REST API for New Payment Form.
 	 */
 	Route::match(array('GET'), 'logout', array(
