@@ -707,14 +707,22 @@ class UserController extends HelperController {
 	public function sendMailFromCron() {
 		$mass_mails = MassMail::with(array('mailgroup'))->where('status', '=', '1')->get();
 		foreach($mass_mails as $mass_mail) {
-			//$mass_mail->status = 2;
-			//$mass_mail->save();
+			$mass_mail->status = 2;
+			$mass_mail->save();
 			$model = $mass_mail->mailgroup->model;
 			$users = MailGroupMember::where('group_id', '=', $mass_mail->mailgroup->id)->lists('user_id');
 			$user_list = $model::whereIn('id', $users)->get();
 			foreach($user_list as $user) {
-				print $user->email;
-				// send mail to this user
+				Config::set('mail.username', Auth::user()->email);
+       			Config::set('mail.password', Auth::user()->email_password);
+
+				Mail::queue([], [], function($message) use(&$mass_mail, &$user)
+				{
+				    $message->to($user->email, $user->first_name . " " . $user->last_name)
+				    ->subject('Head hunting')
+				    ->setBody($mass_mail->description, 'text/html');
+				});
+
 			}
 		}
 	}
