@@ -571,4 +571,12 @@ class CandidateController extends \BaseController {
 		return array($msg, $target_file);
 	}
 
+	/**
+	 * Submits for Job Post.
+	 *
+	 * @return Response
+	 */
+	public function jobSubmittel($jobId, $userId) {
+		return Redirect::route('candidate-list');
+	}
 }

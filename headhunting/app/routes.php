@@ -35,14 +35,6 @@ Route::match(array('POST'), 'login', array(
 		'uses'    =>    'UserController@login'
 ), array('before' => 'csrf', function(){}));
 
-/**
- * Routes For REST API for new Employee
- */
-Route::match(array('POST'), 'job-submittel/{jobId}/', array(
-		'as'    =>    'job-submittel',
-		'uses'    =>    'HomeController@jobSubmittel'
-));
-
 Route::group(array('before' => 'auth'), function() {
 
 	/**
@@ -51,6 +43,14 @@ Route::group(array('before' => 'auth'), function() {
 	Route::match(array('POST'), '/get-assignee', array(
 			'as'    =>    'get-assignee',
 			'uses'    =>    'UserController@postRequirement'
+	));
+
+	/**
+	 * Routes For REST API for new Employee
+	 */
+	Route::match(array('GET', 'POST'), 'job-submittel/{jobId}/{userId}', array(
+			'as'    =>    'job-submittel',
+			'uses'    =>    'CandidateController@jobSubmittel'
 	));
 
 	/**

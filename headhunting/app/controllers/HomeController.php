@@ -38,18 +38,4 @@ class HomeController extends HelperController {
 									->get();
 			return $this->sendJsonResponseOnly($groups->toArray());
 	}
-
-	/**
-	 * Submits for Job Post.
-	 *
-	 * @return Response
-	 */
-	public function jobSubmittel($jobId) {
-
-		$response['error']  = false;
-		$response['jobId']  = $jobId;
-		return $this->sendJsonResponseOnly($response);
-	}
-
-
 }
