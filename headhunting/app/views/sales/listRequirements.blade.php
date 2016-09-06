@@ -32,6 +32,8 @@
 		                        	<a href="{{ URL::route('edit-requirement', array($jobPosts->id)) }}" title="Edit Job Post"><i class="fa fa-fw fa-edit"></i></a>
 		                        	@if($id == 0 && $jobPosts->jobsAssignedToMe()->count() == 0)
 		                        		<a href="{{ URL::route('assign-requirement', array($jobPosts->id)) }}" title="Assign To me"><i class="fa fa-plus"></i></a>
+                              @else
+                                <a href="{{ URL::route('advance-search', array($jobPosts->id)) }}" title="Search Candidate"><i class="fa fa-search"></i></a>
 		                        	@endif
 		                        	@if(Auth::user()->getRole() <= 2)
 		                        		<a href="{{ URL::route('delete-requirement', array($jobPosts->id)) }}" title="Delete Job Post"><i class="fa fa-fw fa-ban text-danger"></i></a>

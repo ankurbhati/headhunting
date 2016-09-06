@@ -9,7 +9,7 @@
  * @version    SVN: <svn_id>
  * @since      29th Feb 2016
  */
-
+ 
 /**
  * Contrller class to search APIS
  *
@@ -21,9 +21,9 @@ class HelperController extends BaseController {
 
     /**
      * Setup the Responce for JSON/JSONP
-     * 
+     *
      * @param Array $data : Data to be passed should be in Array Format
-     * 
+     *
      * @return Object JSON
      */
     public function sendJsonResponse($data) {
@@ -66,7 +66,7 @@ class HelperController extends BaseController {
      * sendJsonResponseOnly : Setup the Responce for JSON/JSONP.
      *
      * @param Array $data : Data to be passed should be in Array Format
-     * 
+     *
      * @return Object JSON
      *
      */
@@ -91,13 +91,13 @@ class HelperController extends BaseController {
 	    foreach ( $lines as $thisline ) {
 	        $pos = strpos( $thisline, chr( 0x00 ) );
 	        if (  $pos !== false )  {
-	
+
 	        } else {
 	            $line_array[] = preg_replace( "/[^a-zA-Z0-9\s\,\.\-\n\r\t@\/\_\(\)]/", "", $thisline );
-	
+
 	        }
 	    }
-	
+
 	    return implode("\n",$line_array);
 	}
 
@@ -112,7 +112,7 @@ class HelperController extends BaseController {
      * @param  $delete_original - if true the original image will be deleted
      * @param  $use_linux_commands - if set to true will use "rm" to delete the image, if false will use PHP unlink
      * @param  $quality - enter 1-100 (100 is best quality) default is 100
-     * 
+     *
      * @return boolean|resource
      */
     public function smart_resize_image($file,
@@ -123,7 +123,7 @@ class HelperController extends BaseController {
             $output             = 'file',
             $delete_original    = true,
             $use_linux_commands = false,
-            $quality = 100 
+            $quality = 100
     ) {
 
         // assigning Extra Memory for Memory Excess Issue.
@@ -145,7 +145,7 @@ class HelperController extends BaseController {
         $final_height = 0;
         list ( $width_old, $height_old ) = $info;
         $cropHeight = $cropWidth = 0;
-        
+
         // Calculating proportionality
         if ($proportional) {
 
@@ -307,10 +307,10 @@ class HelperController extends BaseController {
         curl_close($curl);
         return $output;
     }
-    
+
     /**
      * sendMail : for sending mail to the Users.
-     * 
+     *
      * @param ARRAY $data: Data to send to template,
      * @param STRING $template : Template for Sending Mail to be called.
      * @param User Object $user : To whome mail to send.

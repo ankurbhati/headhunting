@@ -34,12 +34,12 @@ class CandidateController extends \BaseController {
 
 		if(Auth::user()->getRole() <= 3) {
 			Validator::extend('has', function($attr, $value, $params) {
-	
+
 				if(!count($params)) {
-					
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-				
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -60,15 +60,15 @@ class CandidateController extends \BaseController {
 						default:
 							$regex = $param;
 					}
-	
+
 					if(! preg_match($regex, $value)) {
 						return false;
 					}
 				}
-	
+
 				return true;
 			});
-			
+
 			// Server Side Validation.
 			$validate=Validator::make (
 				Input::all(), array(
@@ -89,7 +89,7 @@ class CandidateController extends \BaseController {
 						//'vendor_id' => 'required'
 				)
 			);
-	
+
 			if($validate->fails()) {
 
 				return Redirect::to('add-candidate')
@@ -104,14 +104,14 @@ class CandidateController extends \BaseController {
 
 					if($msg){
 						# error
-						Session::flash('resume_error', $msg); 
+						Session::flash('resume_error', $msg);
 						return Redirect::route('add-candidate')->withInput();
 					} else {
 						# No error
 						$resume_upload = true;
 					}
 				}
-				
+
 				$ssn = Input::get('ssn');
 				$candidate = new Candidate();
 				$candidate->email = Input::get('email');
@@ -129,7 +129,7 @@ class CandidateController extends \BaseController {
 				$candidate->visa_expiry = date('Y-m-d', strtotime(Input::get('visa_expiry')));
 				//$candidate->vendor_id = Input::get('vendor_id');
 				$candidate->added_by = Auth::user()->id;
-				
+
 				$city = Input::get('city');
 
 				if(isset($city) && !empty($city)) {
@@ -176,7 +176,7 @@ class CandidateController extends \BaseController {
 						}
 						return Redirect::route('candidate-list');
 					} else {
-					
+
 						return Redirect::route('add-candidate')->withInput();
 					}
 
@@ -216,7 +216,7 @@ class CandidateController extends \BaseController {
 	 * @return Object : View
 	 *
 	 */
-	public function viewCandidate($id) {
+	public function viewCandidate($id, $jobId = 0) {
 
 		if(Auth::user()->getRole() <= 3) {
 
@@ -226,7 +226,7 @@ class CandidateController extends \BaseController {
 				$candidate = $candidate->first();
 				$resume = CandidateResume::where('candidate_id', $candidate->id)->first();
 				return View::make('Candidate.viewCandidate')
-						   ->with(array('title' => 'View Candidate', 'candidate' => $candidate, 'resume' => $resume));
+						   ->with(array('title' => 'View Candidate', 'candidate' => $candidate, 'resume' => $resume, 'jobId' => $jobId));
 			} else {
 
 				return Redirect::route('dashboard-view');
@@ -287,12 +287,12 @@ class CandidateController extends \BaseController {
 	{
 		if(Auth::user()->getRole() <= 3) {
 			Validator::extend('has', function($attr, $value, $params) {
-		
+
 				if(!count($params)) {
-		
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-		
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -321,7 +321,7 @@ class CandidateController extends \BaseController {
 
 				return true;
 			});
-			
+
 			// Server Side Validation.
 			$validate=Validator::make (
 				Input::all(), array(
@@ -343,7 +343,7 @@ class CandidateController extends \BaseController {
 				)
 			);
 			if($validate->fails()) {
-				
+
 				return Redirect::route('edit-candidate', array('id' => $id))
 								->withErrors($validate)
 								->withInput();
@@ -355,14 +355,14 @@ class CandidateController extends \BaseController {
 					list($msg, $fileType) = $this->check_resume_validity();
 					if($msg){
 						# error
-						Session::flash('resume_error', $msg); 
+						Session::flash('resume_error', $msg);
 						return Redirect::route('edit-candidate')->withInput();
 					} else {
 						# No error
 						$resume_upload = true;
 					}
 				}
-				
+
 				$candidate = Candidate::find($id);
 
 				$email = Input::get('email');
@@ -384,7 +384,7 @@ class CandidateController extends \BaseController {
 					}
 				}
 				$candidate->ssn = !empty($ssn) ? $ssn : Null;
-				
+
 				$candidate->first_name = Input::get('first_name');
 				$candidate->last_name = Input::get('last_name');
 				$candidate->phone = Input::get('phone');
@@ -398,7 +398,7 @@ class CandidateController extends \BaseController {
 				$candidate->visa_expiry = date('Y-m-d', strtotime(Input::get('visa_expiry')));
 				//$candidate->vendor_id = Input::get('vendor_id');
 				$candidate->added_by = Auth::user()->id;
-			
+
 				$city = Input::get('city');
 
 				if(isset($city) && !empty($city)) {
@@ -453,7 +453,7 @@ class CandidateController extends \BaseController {
 
 						return Redirect::route('candidate-list');
 					} else {
-					
+
 						return Redirect::route('edit-candidate')->withInput();
 					}
 
@@ -531,7 +531,7 @@ class CandidateController extends \BaseController {
         $content = str_replace('</w:r></w:p>', "\r<br />", $content);
         #$striped_content = strip_tags($content);
 
-		return $content;        
+		return $content;
         #return $striped_content;
     }
 
@@ -567,8 +567,8 @@ class CandidateController extends \BaseController {
 	    if (!move_uploaded_file($_FILES["resume"]["tmp_name"], $target_file)) {
 	        $msg = "Sorry, there was an error uploading your file.";
 	    }
-	
-		return array($msg, $target_file);	
+
+		return array($msg, $target_file);
 	}
 
 }

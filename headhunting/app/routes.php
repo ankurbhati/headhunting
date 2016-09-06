@@ -35,9 +35,15 @@ Route::match(array('POST'), 'login', array(
 		'uses'    =>    'UserController@login'
 ), array('before' => 'csrf', function(){}));
 
+/**
+ * Routes For REST API for new Employee
+ */
+Route::match(array('POST'), 'job-submittel/{jobId}/', array(
+		'as'    =>    'job-submittel',
+		'uses'    =>    'HomeController@jobSubmittel'
+));
 
 Route::group(array('before' => 'auth'), function() {
-
 
 	/**
 	 * Routes for post-requirement
@@ -261,7 +267,7 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for new Employee
 	 */
-	Route::match(array('GET'), '/advance-search', array(
+	Route::match(array('GET'), '/advance-search/{jobId?}', array(
 			'as'    =>    'advance-search',
 			'uses'    =>    'SearchController@advanceSearch'
 	));
@@ -409,7 +415,7 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for new Candidate
 	 */
-	Route::match(array('GET'), '/view-candidate/{id}', array(
+	Route::match(array('GET'), '/view-candidate/{id}/{jobId?}', array(
 		'as'    =>    'view-candidate',
 		'uses'    =>    'CandidateController@viewCandidate'
 	));
@@ -441,7 +447,7 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for new Employee
 	 */
-	Route::match(array('POST'), '/advance-search', array(
+	Route::match(array('POST'), '/advance-search/{jobId?}', array(
 			'as'    =>    'search-result',
 			'uses'    =>    'SearchController@searchResult'
 	));
