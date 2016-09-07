@@ -25,4 +25,26 @@ class CandidateApplication extends Eloquent {
      * @var string
      */
     protected $table = 'candidate_applications';
+
+    /**
+     *
+     * candidate : Relation between Candidate and Submittel.
+     *
+     * @return Object belongs to Relation Candidate.
+     */
+      public function candidate() {
+
+      	return $this->belongsTo('Candidate','candidate_id','id');
+      }
+
+      /**
+       *
+       * jobPost : Relation between jobPost and Submittel.
+       *
+       * @return Object belongs to Relation jobPost.
+       */
+        public function requirement() {
+
+        	return $this->belongsTo('JobPost','job_post_id','id');
+        }
 }

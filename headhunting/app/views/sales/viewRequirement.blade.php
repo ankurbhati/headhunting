@@ -56,7 +56,7 @@
 	    </div>
 			<div class="row" style="padding-top:15px; padding-bottom:15px;">
 					<div class="col-sm-3">
-						<a class="btn btn-primary" href="{{ URL::route('advance-search') }}">
+						<a class="btn btn-primary" href="{{ URL::route('advance-search', array($jobPost->id)) }}">
 							<i class="fa fa-search"></i> <span>Search Candidate</span>
 						</a>
 					</div>

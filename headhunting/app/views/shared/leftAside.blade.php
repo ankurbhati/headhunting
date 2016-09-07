@@ -107,7 +107,11 @@
               </a>
             </li>
             @endif
-
+            <li>
+              <a href="{{ URL::route('list-submittel') }}">
+                <i class="fa fa-eye"></i> <span>Job Submittels</span>
+              </a>
+            </li>
           </ul>
         </section>
         <!-- /.sidebar -->
