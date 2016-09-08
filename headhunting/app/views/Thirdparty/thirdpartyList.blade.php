@@ -39,7 +39,7 @@
 										@if(Auth::user()->getRole() <= 3)
 											<a href="{{ URL::route('delete-third-party', array($thirdparty->id)) }}" title="Delete Profile"><i class="fa fa-fw fa-ban text-danger"></i></a>
 										@endif
-								@if($thirdparty->document_type != 0 && file_exists(public_path('/uploads/documents/'.$thirdparty->id.'/'.$thirdparty->document_url)))
+								@if($thirdparty->document_type != 0 && $thirdparty->document_url && file_exists(public_path('/uploads/documents/'.$thirdparty->id.'/'.$thirdparty->document_url)))
 									<a href="{{'/uploads/documents/'.$thirdparty->id.'/'.$thirdparty->document_url}}" title="Download Document" target="_blank"><i class="glyphicon glyphicon-download"></i></a>
 								@endif
 								</td>

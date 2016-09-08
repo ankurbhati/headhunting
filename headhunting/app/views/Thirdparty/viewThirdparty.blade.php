@@ -34,11 +34,11 @@
 				@endif
 	        </div>
 	    </div>
-	    @if($thirdparty->document_type != 0 && file_exists(public_path('/uploads/documents/'.$thirdparty->id.'/'.$thirdparty->document_url)))
+	    @if($thirdparty->document_type != 0 && $thirdparty->document_url && file_exists(public_path('/uploads/documents/'.$thirdparty->id.'/'.$thirdparty->document_url)))
 	    <div class="row"><div class="col-sm-4">
 	        Document:
 	        </div><div class="col-sm-8">
-	        	<a href="{{'/uploads/documents/'.$thirdparty->id.'/'.$thirdparty->document_url}}" title="Download Document" target="_blank"><i class="glyphicon glyphicon-download"></i></a>
+	        	<a href="{{'/uploads/documents/'.$thirdparty->id.'/'.$thirdparty->document_url}}" title="Download Document" target="_blank"><i class="glyphicon glyphicon-download"></i>Download Document</a>
 	        </div>
 	    </div>
 	    @endif
