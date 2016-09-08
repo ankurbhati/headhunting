@@ -25,7 +25,7 @@ class JobPost extends Eloquent {
      * @var string
      */
     protected $table = 'job_posts';
-    
+
     /**
      *
      * user : Relation between User Sales & Job Posts.
@@ -33,11 +33,11 @@ class JobPost extends Eloquent {
      * @return Object belongs to Relation User Job Posts.
      */
     public function user() {
-    
+
     	return $this->belongsTo('User','created_by','id');
     }
-    
-    
+
+
     /**
      *
      * countries : Relation between Job Posts & country.
@@ -45,10 +45,10 @@ class JobPost extends Eloquent {
      * @return Object belongs to Relation User Country.
      */
     public function country() {
-    
+
     	return $this->belongsTo('Country','country_id','id');
     }
-    
+
     /**
      *
      * state : Relation between Job Posts & State.
@@ -56,10 +56,10 @@ class JobPost extends Eloquent {
      * @return Object belongs to Relation User State.
      */
     public function state() {
-    
+
     	return $this->belongsTo('State','state_id','id');
     }
-    
+
     /**
      *
      * jobsAssigned : Relation between jobs Assigned.
@@ -67,7 +67,7 @@ class JobPost extends Eloquent {
      * @return Object hasMany Relation jobs Assigned.
      */
     public function jobsAssigned() {
-    
+
     	return $this->hasMany('JobPostAssignment','job_post_id','id');
     }
 
@@ -78,7 +78,7 @@ class JobPost extends Eloquent {
      * @return Object hasMany Relation jobs Assigned.
      */
     public function jobsAssignedToMe() {
-    
+
     	return $this->hasMany('JobPostAssignment','job_post_id','id')->where('assigned_to_id', '=', Auth::user()->id);
     }
 
@@ -89,7 +89,7 @@ class JobPost extends Eloquent {
      * @return Object belongs to Relation User Job Posts.
      */
     public function client() {
-    
+
         return $this->belongsTo('Client','client_id','id');
     }
 
@@ -100,8 +100,19 @@ class JobPost extends Eloquent {
      * @return Object belongs to Relation User Job Posts.
      */
     public function vendor() {
-    
+
         return $this->belongsTo('Vendor','vendor_id','id');
+    }
+
+    /**
+     *
+     * comments : Relation between comments & Job Posts.
+     *
+     * @return Object belongs to Relation User Job Posts comments.
+     */
+    public function comments() {
+
+        return $this->hasMany('JobPostComment','job_post_id','id');
     }
 
     /**
@@ -111,7 +122,7 @@ class JobPost extends Eloquent {
      * @return Object belongs to Relation User Country.
      */
     public function city() {
-    
+
         return $this->belongsTo('City','city_id','id');
     }
 }

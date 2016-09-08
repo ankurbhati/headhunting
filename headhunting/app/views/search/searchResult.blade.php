@@ -35,11 +35,13 @@
                                 <p>{{str_replace("<br />", "", substr($candidate->resume, 0, 80))."..."}}</p>
                             </td>
 		                        <td>
-		                        	<a href="{{ URL::route('view-candidate', array('id' => $candidate->candidate_id, 'jobId' => $jobId )) }}" title="View Profile"><i class="fa fa-fw fa-eye"></i>View |</a>
+		                        	<a href="{{ URL::route('view-candidate', array('id' => $candidate->candidate_id, 'jobId' => $jobId )) }}" title="View Profile"><i class="fa fa-fw fa-eye"></i>View </a>
                               @if(Auth::user()->getRole() <= 3)
-                              <a href="{{'/uploads/resumes/'.$candidate->candidate_id.'/'.$candidate->resume_path}}" title="Download Resume"><i class="glyphicon glyphicon-download"></i>Download |</a>
+                              | <a href="{{'/uploads/resumes/'.$candidate->candidate_id.'/'.$candidate->resume_path}}" title="Download Resume"><i class="glyphicon glyphicon-download"></i>Download</a>
                               @endif
-                              <a href="{{ URL::route('job-submittel', array('jobId' => $jobId, 'userId' => $candidate->candidate_id)) }}" title="Mark Submittel"><i class="fa fa-fw fa-save"></i>Submittel</a>
+                              @if($jobId > 0)
+                               | <a href="{{ URL::route('job-submittel', array('jobId' => $jobId, 'userId' => $candidate->candidate_id)) }}" title="Mark Submittel"><i class="fa fa-fw fa-save"></i>Submittel</a>
+                              @endif
 		                        </td>
 		                      </tr>
 	                   	@empty

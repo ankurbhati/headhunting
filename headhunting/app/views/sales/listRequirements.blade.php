@@ -38,6 +38,7 @@
 		                        	@if(Auth::user()->getRole() <= 2)
 		                        		<a href="{{ URL::route('delete-requirement', array($jobPosts->id)) }}" title="Delete Job Post"><i class="fa fa-fw fa-ban text-danger"></i></a>
 		                        	@endif
+                              <a href="{{ URL::route('add-comment-job-post-view', array($jobPosts->id)) }}" title="Add Comments"><i class="fa fa-fw fa-edit"></i></a>
 		                        </td>
 		                      </tr>
 	                   	@empty

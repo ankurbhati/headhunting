@@ -225,6 +225,22 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes for list-requirement
 	 */
+	Route::match(array('GET'), '/add-comment-job-post/{jobId}', array(
+			'as'    =>    'add-comment-job-post-view',
+			'uses'    =>    'SaleController@addCommentView'
+	));
+
+	/**
+	 * Routes for list-requirement
+	 */
+	Route::match(array('POST'), '/add-comment-job-post/{jobId}', array(
+			'as'    =>    'add-comment-job-post',
+			'uses'    =>    'SaleController@addComment'
+	));
+
+	/**
+	 * Routes for list-requirement
+	 */
 	Route::match(array('GET'), '/view-requirement/{id}', array(
 			'as'    =>    'view-requirement',
 			'uses'    =>    'SaleController@viewRequirement'

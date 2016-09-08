@@ -30,6 +30,7 @@
 		                        <td>
 		                        	<a href="{{ URL::route('view-requirement', array('id' => $candidateApplication->requirement->id)) }}" title="View Job Post"><i class="fa fa-fw fa-eye"></i></a>
                               <a href="{{ URL::route('view-candidate', array('id' => $candidateApplication->candidate->id)) }}" title="View Profile"><i class="fa fa-fw fa-eye"></i></a>
+                              <a href="{{ URL::route('add-comment-job-post-view', array($candidateApplication->requirement->id)) }}" title="Add Comments"><i class="fa fa-fw fa-edit"></i></a>
 		                        </td>
 		                      </tr>
 	                   	@empty

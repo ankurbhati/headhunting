@@ -317,4 +317,56 @@ class SaleController extends HelperController {
 		return View::make('sales.listSubmittels')->with(array('title' => 'List Job Submittels - Headhunting', 'candidateApplications' => $candidateApplications));
 	}
 
+	/**
+	 *
+	 * addCommentView() : addCommentView
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function addCommentView($jobId) {
+		$jobPost = JobPost::with(array('comments', 'comments.user'))->select(array('id', 'title'))->where('id', '=', $jobId)->get();
+		if(!$jobPost->isEmpty()) {
+			$jobPost = $jobPost->first();
+			return View::make('sales.postCommentRequirement')->with(array('title' => 'Job Post Comments - Headhunting', 'jobPost' => $jobPost));
+		}
+	}
+
+	/**
+	 *
+	 * addCommentView() : addCommentView
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function addComment($jobId) {
+		$jobPost = JobPost::where('id', '=', $jobId)->get();
+		if(!$jobPost->isEmpty()) {
+
+			$validate=Validator::make (
+					Input::all(), array(
+							'comment' =>  'required',
+							'job_post_id' => 'required|numeric'
+					)
+			);
+
+			if($validate->fails()) {
+
+				return Redirect::to('add-comment-job-post', array('jobId' => $jobId))
+				->withErrors($validate)
+				->withInput();
+			} else {
+
+				$jobPostComment = new JobPostComment();
+				$jobPostComment->comment = Input::get('comment');
+				$jobPostComment->job_post_id = Input::get('job_post_id');
+				$jobPostComment->added_by = Auth::user()->id;
+				$jobPostComment->created_at = date('Y-m-d H:i:s');
+				if($jobPostComment->save()) {
+					$jobPost = JobPost::with(array('comments', 'comments.user'))->select(array('id', 'title'))->where('id', '=', $jobId)->get()->first();
+					return View::make('sales.postCommentRequirement')->with(array('title' => 'Job Post Comments - Headhunting', 'jobPost' => $jobPost));
+				}
+			}
+		}
+	}
 }
