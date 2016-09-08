@@ -4,7 +4,7 @@ class CandidateController extends \BaseController {
 
 
 	private $resume_target_dir = 'uploads/resumes/';
-	private $resume_size = 50000;
+	private $resume_size = 500000;
 
 
 	/**

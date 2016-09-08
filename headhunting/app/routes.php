@@ -475,5 +475,62 @@ Route::group(array('before' => 'auth'), function() {
 			'as'    =>    'send-mail-from-cron',
 			'uses'    =>    'UserController@sendMailFromCron'
 	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/add-third-party', array(
+			'as'    =>    'add-third-party',
+			'uses'    =>    'ThirdpartyController@create'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('POST'), '/add-third-party', array(
+			'as'    =>    'add-third-party',
+			'uses'    =>    'ThirdpartyController@createThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/third-parties', array(
+			'as'    =>    'third-party-list',
+			'uses'    =>    'ThirdpartyController@thirdpartyList'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/view-third-party/{id}', array(
+		'as'    =>    'view-third-party',
+		'uses'    =>    'ThirdpartyController@viewThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for edit Vendor
+	 */
+	Route::match(array('GET'), '/edit-third-party/{id}', array(
+			'as'    =>    'edit-third-party',
+			'uses'    =>    'ThirdpartyController@editThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for edit Vendor
+	 */
+	Route::match(array('POST'), '/edit-third-party/{id}', array(
+			'as'    =>    'update-third-party',
+			'uses'    =>    'ThirdpartyController@updateThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/delete-third-party/{id}', array(
+			'as'    =>    'delete-third-party',
+			'uses'    =>    'ThirdpartyController@deleteThirdparty'
+	));
+
 	/** ANKUR BHATI **/
 });

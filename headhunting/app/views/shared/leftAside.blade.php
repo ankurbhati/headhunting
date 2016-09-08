@@ -90,6 +90,17 @@
               </ul>
             </li>
             @endif
+	    @if(Auth::user()->getRole() <= 3)
+              <li class="treeview">
+              <a href="#">
+                <i class="fa fa-users"></i> <span>Third Party</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ URL::route('third-party-list') }}"><i class="fa fa-user"></i>Third Party List</a></li>
+                <li><a href="{{ URL::route('add-third-party') }}"><i class="fa fa-user-plus"></i>Add Third Party</a></li>
+              </ul>
+            </li>
+            @endif
             <li>
               <a href="{{ URL::route('advance-search') }}">
                 <i class="fa fa-search"></i> <span>Search</span>
