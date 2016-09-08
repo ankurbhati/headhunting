@@ -116,7 +116,6 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<strong>Resume:</strong>
-
 						 <a href="{{'/uploads/resumes/'.$resume->candidate_id.'/'.$resume->resume_path}}" title="Download Resume"><i class="glyphicon glyphicon-download"></i> Download Resume</a>
 					</div>
 				</div>
