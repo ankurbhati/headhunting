@@ -3,7 +3,7 @@
 <div class="user-view">
 	@if($jobId > 0)
 	<div class="col-sm-2">
-				<a class="btn btn-primary" href="#">
+				<a class="btn btn-primary" href="{{ URL::route('job-submittel', array('jobId' => $jobId, 'userId' => $candidate->id)) }}">
 					<i class="fa fa-save"></i> <span>Mark Submittel</span>
 				</a>
 	</div>

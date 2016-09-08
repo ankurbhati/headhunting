@@ -31,7 +31,7 @@ class SaleController extends HelperController {
 		if(Auth::user()->getRole() <= 2) {
 			$jobPost = new JobPost();
 			$country = Country::all();
-			
+
 			$count = array();
 			foreach( $country as $key => $value) {
 				$count[$value->id] = $value->country;
@@ -297,6 +297,24 @@ class SaleController extends HelperController {
 		} else {
 			return Redirect::to('dashboard');
 		}
+	}
+
+	/**
+	 *
+	 * listSubmittel() : listSubmittel
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function listSubmittel($id=0) {
+		if($id == 0) {
+			$candidateApplications = CandidateApplication::all();
+		} else {
+			$candidateApplications = CandidateApplication::with(array('candidate', 'requirement'))
+																									 ->where('job_post_id', '=', $id)
+																									 ->get();
+		}
+		return View::make('sales.listSubmittels')->with(array('title' => 'List Job Submittels - Headhunting', 'candidateApplications' => $candidateApplications));
 	}
 
 }

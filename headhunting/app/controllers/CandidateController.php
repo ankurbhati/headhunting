@@ -23,7 +23,6 @@ class CandidateController extends \BaseController {
 			, 'work_state' => $work_states));
 	}
 
-
 	/**
 	 * Show the form for creating a new Vendor.
 	 *
@@ -577,6 +576,25 @@ class CandidateController extends \BaseController {
 	 * @return Response
 	 */
 	public function jobSubmittel($jobId, $userId) {
-		return Redirect::route('candidate-list');
+		if(JobPostAssignment::where('job_post_id', '=', $jobId)
+		                    ->where('assigned_to_id', '=', Auth::user()->id)
+												->exists() &&
+			 !CandidateApplication::where('candidate_id', '=', $userId)
+			 										->where('job_post_id', '=', $jobId)->exists()) {
+			$candidateApplication = new CandidateApplication();
+			$candidateApplication->setConnection('master');
+			$candidateApplication->candidate_id = $userId;
+			$candidateApplication->job_post_id = $jobId;
+			$candidateApplication->submitted_by = Auth::user()->id;
+			$candidateApplication->status = 1;
+			$candidateApplication->created_at = date('Y-m-d H:i:s');
+			if($candidateApplication->save()) {
+				return Redirect::route('list-submittel', array('id' => $jobId));
+			} else {
+				return Redirect::route('dashboard-view');
+			}
+		} else {
+			return Redirect::route('dashboard-view');
+		}
 	}
 }

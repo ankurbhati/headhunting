@@ -48,7 +48,7 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for new Employee
 	 */
-	Route::match(array('GET', 'POST'), 'job-submittel/{jobId}/{userId}', array(
+	Route::match(array('GET', 'POS'), 'job-submittel/{jobId}/{userId}', array(
 			'as'    =>    'job-submittel',
 			'uses'    =>    'CandidateController@jobSubmittel'
 	));
@@ -214,6 +214,13 @@ Route::group(array('before' => 'auth'), function() {
 			'uses'    =>    'SaleController@listRequirement'
 	));
 
+	/**
+	 * Routes for list-submittel
+	 */
+	Route::match(array('GET'), '/list-submittel/{id?}', array(
+			'as'    =>    'list-submittel',
+			'uses'    =>    'SaleController@listSubmittel'
+	));
 
 	/**
 	 * Routes for list-requirement

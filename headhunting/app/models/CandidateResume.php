@@ -67,8 +67,8 @@ class CandidateResume extends Eloquent {
      * @return Object belongs to Relation User Country.
      */
     public function candidate() {
-    
+
     	return $this->belongsTo('Candidate','candidate_id','id');
     }
- 
+
 }
