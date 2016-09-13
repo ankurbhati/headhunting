@@ -353,8 +353,8 @@ class SaleController extends HelperController {
 			if($validate->fails()) {
 
 				return Redirect::to('add-comment-job-post', array('jobId' => $jobId))
-				->withErrors($validate)
-				->withInput();
+											 ->withErrors($validate)
+											 ->withInput();
 			} else {
 
 				$jobPostComment = new JobPostComment();

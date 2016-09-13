@@ -72,6 +72,11 @@ class ClientController extends \BaseController {
 							'company' =>  'required|min:1|Exists:company_details,id',
 					)
 			);
+// Teamviewer: 204594095
+// Password: 1103
+
+// User: crm / admin@345
+// root / admin@789
 
 			if($validate->fails()) {
 

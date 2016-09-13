@@ -44,8 +44,8 @@ class UserController extends HelperController {
 		foreach( $roles as $key => $value) {
 			$rols[$value->id] = $value->role;
 		}
-		
-		
+
+
 		$country = Country::all();
 		$count = array();
 		foreach( $country as $key => $value) {
@@ -66,7 +66,7 @@ class UserController extends HelperController {
 		$users = User::with(array('userRoles'))->where('id', '!=', Auth::user()->id)->get();
 		return View::make('User.employeeList')->with(array('title' => 'Employee List', 'users' => $users));
 	}
-	
+
 	/**
 	 *
 	 * getStates() : get States
@@ -78,7 +78,7 @@ class UserController extends HelperController {
 		$states = State::where('country_id', '=', $id)->get();
 		return $this->sendJsonResponseOnly($states);
 	}
-	
+
 	/**
 	 *
 	 * getPeers() : get getPeers
@@ -91,7 +91,7 @@ class UserController extends HelperController {
 		$users = UserRole::with(array('user'))->where("role_id", "=",$peerRole)->get();
 		return $this->sendJsonResponseOnly($users);
 	}
-	
+
 	/**
 	 *
 	 * getTeam() : get getPeers
@@ -99,12 +99,16 @@ class UserController extends HelperController {
 	 * @return Object : JSON
 	 *
 	 */
-	public function getTeam() {
+	public function getTeam($id = 0) {
 
+		$jobPost = "";
+		if($id > 0) {
+			$jobPost = JobPost::find($id);
+		}
 		$users = UserPeer::with(array('peer', 'peer.userRoles'))->where("peer_id", "=", Auth::user()->id)->get();
-		return View::make('User.teamList')->with(array('title' => 'Team List', 'users' => $users));
+		return View::make('User.teamList')->with(array('title' => 'Team List', 'users' => $users, 'jobPostId' => $id, 'jobPost' => $jobPost));
 	}
-	
+
 	/**
 	 *
 	 * getCities() : get States
@@ -117,7 +121,7 @@ class UserController extends HelperController {
 		$cities = City::where('state_id', '=', $id)->get();
 		return $this->sendJsonResponseOnly($cities);
 	}
-	
+
 	/**
 	 *
 	 * deleteEmp() : Delete Employee
@@ -145,13 +149,13 @@ class UserController extends HelperController {
 		if(Auth::user()->getRole() == 1 || Auth::user()->id == $id ) {
 			$roles = Role::all();
 			$rols = array();
-			
+
 			foreach( $roles as $key => $value) {
 				$rols[$value->id] = $value->role;
 			}
 			$country = Country::all();
 			$count = array();
-	
+
 			foreach( $country as $key => $value) {
 				$count[$value->id] = $value->country;
 			}
@@ -172,7 +176,7 @@ class UserController extends HelperController {
 		}
 	}
 
-	
+
 	/**
 	 *
 	 * updatePass() : update Password
@@ -181,16 +185,16 @@ class UserController extends HelperController {
 	 *
 	 */
 	public function updatePass($id) {
-	
+
 		if(Auth::user()->getRole() == 1 || Auth::user()->id == $id ) {
-	
+
 			Validator::extend('has', function($attr, $value, $params) {
-		
+
 				if(!count($params)) {
 
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-		
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -246,19 +250,19 @@ class UserController extends HelperController {
 					if(Auth::user()->id == $id) {
 						Auth::logout();
 						return Redirect::to('/')
-									   ->withInput(array('status' => 'success', 'message' => 'Your password has been updated 
+									   ->withInput(array('status' => 'success', 'message' => 'Your password has been updated
 									   		Please relogin using new password.'));
 					} else {
 						return Redirect::route('dashboard-view');
 					}
 				}
 			}
-	
+
 		} else {
 			return Redirect::route('dashboard-view');
 		}
 	}
-	
+
 	/**
 	 *
 	 * updatePassView() : update Password View
@@ -323,12 +327,12 @@ class UserController extends HelperController {
 
 		if(Auth::user()->getRole() == 1 || Auth::user()->id == $id) {
 			Validator::extend('has', function($attr, $value, $params) {
-		
+
 				if(!count($params)) {
-		
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-		
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -369,7 +373,7 @@ class UserController extends HelperController {
 							'gender' => 'required',
 					)
 			);
-		
+
 			if($validate->fails()) {
 				return Redirect::to('edit-member', array('id' => $id))
 								->withErrors($validate)
@@ -377,7 +381,7 @@ class UserController extends HelperController {
 			} else {
 				$inputs = Input::except(array('_token', 'roles', 'doj', 'dor', 'mentor_id'));
 				$user = User::find($id);
-				
+
 				if(Input::has("email") && Input::get('email') != $user->email){
 					$email = Input::get('email');
 					if(!User::where('email', '=', $email)->get()->isEmpty()) {
@@ -391,7 +395,7 @@ class UserController extends HelperController {
 				foreach($inputs as $key => $value) {
 					$user->$key = $value;
 				}
-				
+
 				if(Input::has("doj") && Input::get('doj') != "") {
 					$user->doj = date("Y-m-d H:i:s", strtotime(Input::get('doj')));
 				}
@@ -399,7 +403,7 @@ class UserController extends HelperController {
 				if(Input::has("dor") && Input::get('dor') != "") {
 					$user->dor = date("Y-m-d H:i:s", strtotime(Input::get('dor')));
 				}
-				
+
 				// Checking Authorised or not
 				if($user->save()) {
 					$userRoles = UserRole::where("user_id", "=", $id)->first();
@@ -430,7 +434,7 @@ class UserController extends HelperController {
 			}
 		}
 	}
-	
+
 	/**
 	 *
 	 * home() : login View
@@ -469,7 +473,7 @@ class UserController extends HelperController {
 		} else {
 			$user = User::on('master')->where('email', '=', Input::get('email'))->first();
 			if(!empty($user) && $user instanceof User) {
-				
+
 				// checking for Remember Flag.
 				$remember = Input::has("remember") ? true : false;
 
@@ -492,11 +496,11 @@ class UserController extends HelperController {
 			} else {
 								return Redirect::to('/')
 				   			   				   ->withErrors(array('email' => 'Your Email or pasword is incorrect'));
-				
+
 			}
 		}
 	}
-	
+
 	/**
 	 * logout() : to Logout Logged in User.
 	 *
@@ -505,9 +509,9 @@ class UserController extends HelperController {
 	 * @return Object JSON
 	 */
 	public function logout() {
-	
+
 		if(Auth::check()) {
-	
+
 			Auth::logout();
 			return Redirect::to('/')
 						   ->withInput(array('status' => 'success', 'message' => 'Thanks for Comming'));
@@ -527,12 +531,12 @@ class UserController extends HelperController {
 
 		if(Auth::user()->getRole() == 1) {
 			Validator::extend('has', function($attr, $value, $params) {
-	
+
 				if(!count($params)) {
-	
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-	
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -553,15 +557,15 @@ class UserController extends HelperController {
 						default:
 							$regex = $param;
 					}
-	
+
 					if(! preg_match($regex, $value)) {
 						return false;
 					}
 				}
-	
+
 				return true;
 			});
-	
+
 			// Server Side Validation.
 			$validate=Validator::make (
 					Input::all(), array(
@@ -574,14 +578,14 @@ class UserController extends HelperController {
 							'confirm_password' =>  'required|min:6|same:password',
 					)
 			);
-	
+
 			if($validate->fails()) {
 
 				return Redirect::to('add-employee')
 							   ->withErrors($validate)
 							   ->withInput();
 			} else {
-	
+
 				$inputs = Input::except(array('_token', 'roles', 'confirm_password', 'mentor_id'));
 				$user = new User();
 				$user->setConnection('master');
@@ -589,13 +593,13 @@ class UserController extends HelperController {
 					$user->$key = $value;
 				}
 				$password = Input::get('password');
-	
+
 				// Changing Password to Hash
 				if(isset($password) && !empty($password)) {
-				
+
 					$user->password = Hash::make($password);
 				}
-	
+
 				$user->status = 1;
 
 				// Checking Authorised or not
@@ -633,12 +637,12 @@ class UserController extends HelperController {
 
 		if (Request::isMethod('post')) {
 			Validator::extend('has', function($attr, $value, $params) {
-	
+
 				if(!count($params)) {
-	
+
 					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
 				}
-	
+
 				foreach ($params as $param) {
 					switch ($param) {
 						case 'num':
@@ -659,15 +663,15 @@ class UserController extends HelperController {
 						default:
 							$regex = $param;
 					}
-	
+
 					if(! preg_match($regex, $value)) {
 						return false;
 					}
 				}
-	
+
 				return true;
 			});
-	
+
 			// Server Side Validation.
 			$validate=Validator::make (
 				Input::all(), array(
@@ -675,7 +679,7 @@ class UserController extends HelperController {
 						'description' => 'required'
 				)
 			);
-	
+
 			if($validate->fails()) {
 				return Redirect::to('mass-mail')
 							   ->withErrors($validate)
@@ -701,7 +705,7 @@ class UserController extends HelperController {
 	 *
 	 * sendMailFromCron() : sendMailFromCron
 	 *
-	 * @return Object : 
+	 * @return Object :
 	 *
 	 */
 	public function sendMailFromCron() {

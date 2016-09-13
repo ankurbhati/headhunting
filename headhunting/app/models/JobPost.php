@@ -84,6 +84,17 @@ class JobPost extends Eloquent {
 
     /**
      *
+     * jobsAssignedtoId : Relation between jobs Assigned.
+     *
+     * @return Object hasMany Relation jobs Assigned.
+     */
+    public function jobsAssignedToId($id) {
+
+    	return $this->hasMany('JobPostAssignment','job_post_id','id')->where('assigned_to_id', '=', $id);
+    }
+
+    /**
+     *
      * client : Relation between Client & Job Posts.
      *
      * @return Object belongs to Relation User Job Posts.

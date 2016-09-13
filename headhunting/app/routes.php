@@ -135,7 +135,7 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for states
 	 */
-	Route::match(array('GET'), '/team', array(
+	Route::match(array('GET'), '/team/{id?}', array(
 			'as'    =>    'peers',
 			'uses'    =>    'UserController@getTeam'
 	));
