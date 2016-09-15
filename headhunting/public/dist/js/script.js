@@ -133,7 +133,7 @@ $(function () {
 
 	// Create a newDate() object
 	var newDate_india = new Date();
-	var newDate_usa = new Date((newDate_india.getTime() - (newDate_india.getTimezoneOffset() * 60000)) - (3600000*4));
+	var newDate_usa = new Date((newDate_india.getTime() + (newDate_india.getTimezoneOffset() * 60000)) - (3600000*4));
 
 	// Extract the current date from Date object
 	//newDate_india.setDate(newDate_india.getDate());
