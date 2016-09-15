@@ -104,7 +104,7 @@ class CandidateController extends \BaseController {
 					if($msg){
 						# error
 						Session::flash('resume_error', $msg);
-						return Redirect::route('add-candidate')->withInput();
+						return Redirect::route('add-candidate', array('id' => $id))->withInput();
 					} else {
 						# No error
 						$resume_upload = true;
