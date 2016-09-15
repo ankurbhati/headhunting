@@ -476,7 +476,10 @@ class CandidateController extends \BaseController {
 		if(Auth::user()->getRole() <= 3) {
 			$candidate = Candidate::find($id);
 			$resume = CandidateResume::where('candidate_id', $candidate->id)->first();
-			if($resume->removeFromIndex() && $resume->delete() && $candidate->delete()) {
+			if($resume && $resume->removeFromIndex() && $resume->delete() ){
+
+			}  
+			if($candidate->delete()) {
 				return Redirect::route('candidate-list');
 			}
 		}
