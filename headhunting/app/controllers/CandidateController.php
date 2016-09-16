@@ -453,12 +453,12 @@ class CandidateController extends \BaseController {
 						return Redirect::route('candidate-list');
 					} else {
 
-						return Redirect::route('edit-candidate')->withInput();
+						return Redirect::route('edit-candidate', array('id' => $id))->withInput();
 					}
 
 				} catch(Exception $e) {
 
-					return Redirect::route('edit-candidate')->withInput();
+					return Redirect::route('edit-candidate', array('id' => $id))->withInput();
 				}
 			}
 		}
@@ -493,7 +493,8 @@ class CandidateController extends \BaseController {
         $outtext = "";
         foreach($lines as $thisline) {
             $pos = strpos($thisline, chr(0x00));
-            if (($pos !== FALSE)||(strlen($thisline)==0)) {
+            #if (($pos !== FALSE)||(strlen($thisline)==0)) {
+            if (strlen($thisline)==0) {
             } else {
             	$outtext .= htmlspecialchars($thisline."<br />", ENT_QUOTES);
             }
