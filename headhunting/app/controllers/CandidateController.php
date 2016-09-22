@@ -31,7 +31,7 @@ class CandidateController extends \BaseController {
 	public function createCandidate()
 	{
 
-		if(Auth::user()->getRole() <= 3) {
+		if(Auth::user()->getRole() <= 5) {
 			Validator::extend('has', function($attr, $value, $params) {
 
 				if(!count($params)) {
@@ -217,7 +217,7 @@ class CandidateController extends \BaseController {
 	 */
 	public function viewCandidate($id, $jobId = 0) {
 
-		if(Auth::user()->getRole() <= 3) {
+		if(Auth::user()->getRole() <= 5) {
 
 			$candidate = Candidate::with(array('visa', 'createdby', 'city', 'state', 'country', 'workstate'))->where('id', '=', $id)->get();
 
@@ -246,7 +246,7 @@ class CandidateController extends \BaseController {
 	 */
 	public function editCandidate($id) {
 
-		if(Auth::user()->getRole() <= 3) {
+		if(Auth::user()->getRole() <= 5) {
 
 			$country = Country::all()->lists('country', 'id');
 			$visa = Visa::all()->lists('title', 'id');
@@ -284,7 +284,7 @@ class CandidateController extends \BaseController {
 	 */
 	public function updateCandidate($id)
 	{
-		if(Auth::user()->getRole() <= 3) {
+		if(Auth::user()->getRole() <= 5) {
 			Validator::extend('has', function($attr, $value, $params) {
 
 				if(!count($params)) {
@@ -473,7 +473,7 @@ class CandidateController extends \BaseController {
 	 *
 	 */
 	public function deleteCandidate($id) {
-		if(Auth::user()->getRole() <= 3) {
+		if(Auth::user()->getRole() <= 5) {
 			$candidate = Candidate::find($id);
 			$resume = CandidateResume::where('candidate_id', $candidate->id)->first();
 			if($resume && $resume->removeFromIndex() && $resume->delete() ){

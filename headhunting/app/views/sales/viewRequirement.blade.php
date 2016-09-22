@@ -11,19 +11,33 @@
 	        </div>
 	    </div>
 			<div class="row"><div class="col-sm-4">
-					Client:
+					End Client:
 					</div><div class="col-sm-8">
 						{{$jobPost->client->first_name."-".$jobPost->client->email}}
 					</div>
 			</div>
-			<div class="row">
-				<div class="col-sm-4">
-		        Vendor:
-		        </div>
-		        <div class="col-sm-8">
-					{{$jobPost->vendor->vendor_domain."-".$jobPost->vendor->email}}
-	    	    </div>
-	    	</div>
+			
+			<div class="row"><div class="col-sm-4">
+					Type Of Employment:
+					</div><div class="col-sm-8">
+						{{($jobPost->type_of_employment == 1)?"Contractual": ($jobPosts->type_of_employment == 2)?"Permanent": "Contract to hire";}}
+					</div>
+			</div>
+			@if($jobPost->type_of_employment != 2)
+			<div class="row"><div class="col-sm-4">
+					Duration:
+					</div><div class="col-sm-8">
+						{{($jobPost->duration) ? $jobPost->duration . " months" : "-"}}
+					</div>
+			</div>
+			@endif
+			<div class="row"><div class="col-sm-4">
+					Mode Of Interview:
+					</div><div class="col-sm-8">
+						{{$jobPost->mode_of_interview}}
+					</div>
+			</div>
+
 			<div class="row"><div class="col-sm-4">
 					Rate:
 					</div><div class="col-sm-8">

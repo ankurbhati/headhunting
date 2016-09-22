@@ -5,6 +5,15 @@
 'form-horizontal','id' => 'login-form',  'method' => 'POST')) }}
 
     <div class="form-group">
+        {{ Form::label('name', 'Name: ', array('class' => 'col-sm-3
+        control-label')); }}
+        <div class="col-sm-8">{{ Form::text('name', $thirdparty->name, array('class' =>
+            'form-control', 'placeholder' => 'Enter Name')); }} 
+            <span class='errorlogin email-login'>{{$errors->first('name');}}@if(!empty($message)){{$message}}@endIf</span>
+        </div>
+    </div>
+
+    <div class="form-group">
         {{ Form::label('email', 'E-Mail: ', array('class' => 'col-sm-3
         control-label')); }}
         <div class="col-sm-8">
@@ -24,7 +33,11 @@
     <div class="form-group">
         {{ Form::label('phone', 'Phone: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::text('phone', $thirdparty->phone, array('class' =>
+        <div class="col-sm-4">{{ Form::text('phone_ext', $thirdparty->phone_ext, array('class' =>
+            'form-control', 'placeholder' => 'Enter phone ext', 'required')); }} 
+            <span class='errorlogin'>{{$errors->first('phone_ext');}}@if(!empty($message)){{$message}}@endIf</span>
+        </div>
+        <div class="col-sm-4">{{ Form::text('phone', $thirdparty->phone, array('class' =>
             'form-control', 'placeholder' => 'Enter Vendor Phone Number', 'required', "data-inputmask"=>'"mask": "(999) 999-9999"', "data-mask")); }} 
             <span class='errorlogin'>{{$errors->first('phone');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>

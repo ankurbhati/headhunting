@@ -2,6 +2,12 @@
 @section('content')
 <div class="row user-view">
 	<div class="col-sm-12 right-view">
+		<div class="row"><div class="col-sm-4">
+	        Name:
+	        </div><div class="col-sm-8">
+	        	{{$thirdparty->name}}
+	        </div>
+	    </div>
 	    <div class="row"><div class="col-sm-4">
 	        Email:
 	        </div><div class="col-sm-8">
@@ -18,7 +24,7 @@
 	    <div class="row"><div class="col-sm-4">
 	        Phone:
 	        </div><div class="col-sm-8">
-	        	{{$thirdparty->phone}}
+	        	{{$thirdparty->phone_ext.$thirdparty->phone}}
 	        </div>
 	    </div>
 

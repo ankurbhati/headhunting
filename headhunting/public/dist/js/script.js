@@ -44,44 +44,26 @@ $(function () {
 	    	$('#mentor_id_view').hide();
 	    }
   }
+543
+  if($('select#type_of_employment').val() !== undefined) {
 
-  if($('select#work_state_id').val() !== undefined) {
-
-	  $('select#work_state_id').change(function() {
-		    var state_id = $(this).val();
-		    if(state_id == 3) {
-		    	$('#third_party_view').show();
-		    	getThirdParty();
+	  $('select#type_of_employment').change(function() {
+		    var type_of_employment_id = $(this).val();
+		    if(type_of_employment_id == 3 || type_of_employment_id == 1) {
+		    	$('#duration_id').show();
 		    } else {
-		    	$('select#third_party_id').val('');
-		    	$('#third_party_view').hide();
+		    	$('select#type_of_employment').val('');
+		    	$('#duration_id').hide();
 		    }
 		});
 	  
-	  var state_id = $('select#work_state_id').val();
-	    if(state_id == 3) {
-	    	$('#third_party_view').show();
-	    	getThirdParty();
+	  var type_of_employment_id = $('select#type_of_employment').val();
+	    if(type_of_employment_id == 3 || type_of_employment_id == 1) {
+	    	$('#duration_id').show();
 	    } else {
-	    	$('select#third_party_id').val('');
-	    	$('#third_party_view').hide();
+	    	$('select#type_of_employment').val('');
+	    	$('#duration_id').hide();
 	    }
-  }
-  
-  function getThirdParty() {
-	  $.ajax({
-	        url: '/third_party/'
-	    }).done(function(subcategories) {
-	        // subcategories is json, loop over it and populate the subcategory select
-
-	        var subcategoryItems = "";
-	        $.each(subcategories, function(i, item)
-	        {
-	               subcategoryItems+= "<option value='"+ item.id+ "'>" + item.email + "</option>";
-	        });
-	        $('select#third_party_id').html(subcategoryItems);
-	        $('select#third_party_id').val(subcategories[0].id);
-	    });
   }
 
   function getPeer(role) {

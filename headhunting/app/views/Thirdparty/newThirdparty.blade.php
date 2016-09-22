@@ -5,6 +5,15 @@
 'form-horizontal','id' => 'login-form',  'method' => 'POST', 'enctype' => 'multipart/form-data')) }}
 
     <div class="form-group">
+        {{ Form::label('name', 'Name: ', array('class' => 'col-sm-3
+        control-label')); }}
+        <div class="col-sm-8">{{ Form::text('name', "", array('class' =>
+            'form-control', 'placeholder' => 'Enter Name')); }} 
+            <span class='errorlogin email-login'>{{$errors->first('name');}}@if(!empty($message)){{$message}}@endIf</span>
+        </div>
+    </div>
+
+    <div class="form-group">
         {{ Form::label('email', 'E-Mail: ', array('class' => 'col-sm-3
         control-label')); }}
         <div class="col-sm-8">{{ Form::text('email', "", array('class' =>
@@ -25,7 +34,10 @@
     <div class="form-group">
         {{ Form::label('phone', 'Phone: ', array('class' => 'col-sm-3
         control-label')); }}
-        <div class="col-sm-8">{{ Form::text('phone', "", array('class' => 'form-control', 'placeholder' => 'ex. (704) 888-9999', "data-inputmask"=>'"mask": "(999) 999-9999"', "data-mask")); }} 
+        <div class="col-sm-4">{{ Form::text('phone_ext', "", array('class' => 'form-control', 'placeholder' => 'ext. 121')); }} 
+            <span class='errorlogin email-login'>{{$errors->first('phone_ext');}}@if(!empty($message)){{$message}}@endIf</span>
+        </div>
+        <div class="col-sm-4">{{ Form::text('phone', "", array('class' => 'form-control', 'placeholder' => 'ex. (704) 888-9999', "data-inputmask"=>'"mask": "(999) 999-9999"', "data-mask")); }} 
             <span class='errorlogin email-login'>{{$errors->first('phone');}}@if(!empty($message)){{$message}}@endIf</span>
         </div>
     </div>
