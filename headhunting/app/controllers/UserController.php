@@ -105,6 +105,7 @@ class UserController extends HelperController {
 		$managerUsers = array();
 		$users = array();
 		$currentUserRole = Auth::user()->getRole();
+		Log::info($currentUserRole);
 		if($currentUserRole === 1) {
 			$managerUsers = User::select(array('id', 'first_name', 'last_name', 'email', 'designation'))->whereHas('userRoles', function($q){
 				    $q->where('role_id', '<', 6)
@@ -124,7 +125,7 @@ class UserController extends HelperController {
 			}
 		}
 
-		
+
 		return View::make('User.teamList')->with(array('title' => 'Team List', 'users' => $users, 'jobPostId' => $id, 'jobPost' => $jobPost, 'managerUsers' => $managerUsers));
 	}
 
