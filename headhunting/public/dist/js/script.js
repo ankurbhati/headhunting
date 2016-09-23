@@ -61,7 +61,7 @@ $(function () {
 	    if(type_of_employment_id == 3 || type_of_employment_id == 1) {
 	    	$('#duration_id').show();
 	    } else {
-	    	$('select#type_of_employment').val('');
+	    	$('#duration').val('');
 	    	$('#duration_id').hide();
 	    }
   }
