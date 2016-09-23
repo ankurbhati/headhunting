@@ -23,7 +23,7 @@
 		                    <tr>
 								<td>{{$thirdparty->email}}</td>
 									<td>{{$thirdparty->poc}}</td>
-									<td>{{$thirdparty->phone_ext.$thirdparty->phone}}</td>
+									<td>{{$thirdparty->phone}}</td>
 								@if($thirdparty->document_type == 1)
 									<td>NCA</td>
 								@elseif($thirdparty->document_type == 2)

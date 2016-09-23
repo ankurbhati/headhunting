@@ -10,10 +10,7 @@ class ClientController extends \BaseController {
 	 */
 	public function create()
 	{
-		//$company = CompanyDetail::all();
-		$companies = CompanyDetail::all()->lists('company_name', 'id');
-
-		return View::make('Client.newClient')->with(array('title' => 'Add Client', 'companies' => $companies));
+		return View::make('Client.newClient')->with(array('title' => 'Add Client'));
 	}
 
 
@@ -69,14 +66,10 @@ class ClientController extends \BaseController {
 							'first_name' => 'required|max:50',
 							'last_name' => 'required|max:50',
 							'phone' => 'max:14',
+							'phone_ext' => 'max:10',
 							'company_name' =>  'max:247',
 					)
 			);
-// Teamviewer: 204594095
-// Password: 1103
-
-// User: crm / admin@345
-// root / admin@789
 
 			if($validate->fails()) {
 
@@ -90,7 +83,8 @@ class ClientController extends \BaseController {
 				$client->last_name = Input::get('last_name');
 				$client->email = Input::get('email');
 				$client->phone = Input::get('phone');
-				$client->company_id = Input::get('company');
+				$client->phone_ext = Input::get('phone_ext');
+				$client->company_name = Input::get('company_name');
 				$client->created_by = Auth::user()->id;
 
 				// Checking Authorised or not
@@ -233,7 +227,8 @@ class ClientController extends \BaseController {
 							'first_name' => 'required|max:50',
 							'last_name' => 'required|max:50',
 							'phone' => 'max:14',
-							'company' =>  'required|min:1|Exists:company_details,id',
+							'phone_ext' => 'max:10',
+							'company_name' =>  'max:247',
 					)
 			);
 			if($validate->fails()) {
@@ -258,7 +253,8 @@ class ClientController extends \BaseController {
 				$client->first_name = Input::get('first_name');
 				$client->last_name = Input::get('last_name');
 				$client->phone = Input::get('phone');
-				$client->company_id = Input::get('company');
+				$client->phone_ext = Input::get('phone_ext');
+				$client->company_name = Input::get('company_name');
 
 				// Checking Authorised or not
 				if($client->save()) {
@@ -287,6 +283,5 @@ class ClientController extends \BaseController {
 			}
 		}
 	}
-
 
 }

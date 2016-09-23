@@ -707,6 +707,7 @@ class UserController extends HelperController {
 				$mass_mail = new MassMail();
 				$mass_mail->mail_group_id = Input::get('mail_group_id');
 				$mass_mail->description = Input::get('description');
+				$mass_mail->send_by = Auth::user()->id;
 				if($mass_mail->save()) {
 					return Redirect::route('dashboard-view');
 				} else {

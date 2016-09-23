@@ -24,7 +24,13 @@
 	    <div class="row"><div class="col-sm-4">
 	        Phone:
 	        </div><div class="col-sm-8">
-	        	{{$thirdparty->phone_ext.$thirdparty->phone}}
+	        	{{$thirdparty->phone}}
+	        </div>
+	    </div>
+	    <div class="row"><div class="col-sm-4">
+	        Phone Extension:
+	        </div><div class="col-sm-8">
+	        	{{$thirdparty->phone_ext}}
 	        </div>
 	    </div>
 
