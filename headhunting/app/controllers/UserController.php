@@ -107,10 +107,15 @@ class UserController extends HelperController {
 		$currentUserRole = Auth::user()->getRole();
 		Log::info($currentUserRole);
 		if($currentUserRole === 1) {
+			Log::info('inside');
+
 			$managerUsers = User::select(array('id', 'first_name', 'last_name', 'email', 'designation'))->whereHas('userRoles', function($q){
 				    $q->where('role_id', '<', 6)
 				      ->where('user_id', '!=', Auth::user()->id);
 			})->get();
+			$queries = DB::getQueryLog();
+			$last_query = end($queries);
+			Log::info('inside after query >>>'.json_encode($last_query));
 		} else {
 			$users = UserPeer::with(array('peer', 'peer.userRoles'))->where("peer_id", "=", Auth::user()->id)->get();
 		}
