@@ -39,7 +39,7 @@
                                 <th>Already Assigned</th>
                               @endif
                             @endif
-                          </tr> 
+                          </tr>
                       @endforeach
                       @foreach($users as $user)
                           <tr>
@@ -52,7 +52,7 @@
                             @else
                               <th>Already Assigned</th>
                             @endif
-                          </tr> 
+                          </tr>
                       @endforeach
                     </tbody>
                     <tfoot>

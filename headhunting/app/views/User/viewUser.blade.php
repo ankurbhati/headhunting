@@ -1,12 +1,7 @@
 @extends('layouts.adminLayout')
 @section('content')
 <div class="row user-view">
-	<div class="col-sm-4 left-view">
-		<div class="image text-center">
-			<img class="img-circle" alt="User Image" src="../dist/img/avatar5.png">
-		</div>
-	</div>
-	<div class="col-sm-8 right-view">
+	<div class="col-sm-12 right-view" style="margin-left:15px;">
 	    <div class="row"><div class="col-sm-4">
 	        Email:
 	        </div><div class="col-sm-8">
