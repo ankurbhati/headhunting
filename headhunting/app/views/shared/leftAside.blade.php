@@ -35,7 +35,7 @@
               </ul>
             </li>
             @endif
-            
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-bookmark-o"></i> <span>Requirements</span> <i class="fa fa-angle-left pull-right"></i>
@@ -48,7 +48,7 @@
                 <li><a href="{{ URL::route('assigned-requirement', array(Auth::user()->id)) }}"><i class="fa fa-upload"></i>Assigned Requirement</a></li>
               </ul>
             </li>
-            
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-users"></i> <span>Candidates</span> <i class="fa fa-angle-left pull-right"></i>
@@ -88,7 +88,7 @@
             @endif
             <li>
               <a href="{{ URL::route('list-submittel') }}">
-                <i class="fa fa-eye"></i> <span>Job Submittals</span>
+                <i class="fa fa-eye"></i> <span>Job Submittels</span>
               </a>
             </li>
           </ul>
