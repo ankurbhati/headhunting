@@ -88,7 +88,7 @@
             @endif
             <li>
               <a href="{{ URL::route('list-submittel') }}">
-                <i class="fa fa-eye"></i> <span>Job Submittels</span>
+                <i class="fa fa-eye"></i> <span>Job Submittals</span>
               </a>
             </li>
           </ul>
