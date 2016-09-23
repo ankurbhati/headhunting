@@ -69,7 +69,7 @@ class ClientController extends \BaseController {
 							'first_name' => 'required|max:50',
 							'last_name' => 'required|max:50',
 							'phone' => 'max:14',
-							'company' =>  'required|min:1|Exists:company_details,id',
+							'company_name' =>  'max:247',
 					)
 			);
 // Teamviewer: 204594095
