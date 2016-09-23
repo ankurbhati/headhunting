@@ -106,7 +106,7 @@ class UserController extends HelperController {
 		$users = array();
 		$currentUserRole = Auth::user()->getRole();
 		Log::info($currentUserRole);
-		if($currentUserRole === 1) {
+		if($currentUserRole == 1) {
 			Log::info('inside');
 
 			$managerUsers = User::select(array('id', 'first_name', 'last_name', 'email', 'designation'))->whereHas('userRoles', function($q){
@@ -122,7 +122,7 @@ class UserController extends HelperController {
 
 		if($id > 0) {
 			$jobPost = JobPost::find($id);
-			if($currentUserRole === 2 || $currentUserRole === 3 || $currentUserRole === 5) {
+			if($currentUserRole == 2 || $currentUserRole == 3 || $currentUserRole == 5) {
 				$managerUsers = User::select(array('id', 'first_name', 'last_name', 'email', 'designation'))->whereHas('userRoles', function($q){
 				    $q->where('role_id', '<=', 5)
 				      ->where('role_id', '>=', 4);
