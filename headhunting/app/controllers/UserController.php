@@ -125,7 +125,8 @@ class UserController extends HelperController {
 			}
 		}
 
-
+		Log::info(">>>>>>>>>>>>>>>>".json_encode($managerUsers));
+		Log::info(">>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<".json_encode($users));
 		return View::make('User.teamList')->with(array('title' => 'Team List', 'users' => $users, 'jobPostId' => $id, 'jobPost' => $jobPost, 'managerUsers' => $managerUsers));
 	}
 
