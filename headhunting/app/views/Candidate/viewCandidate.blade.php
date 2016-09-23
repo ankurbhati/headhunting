@@ -1,15 +1,17 @@
 @extends('layouts.adminLayout')
 @section('content')
-<div class="row user-view">
-	<div class="col-sm-4 left-view">
-		<div class="image text-center">
-			<img class="img-circle" alt="User Image" src="../dist/img/user2-160x160.jpg">
-		</div>
+<div class="user-view">
+	@if($jobId > 0)
+	<div class="col-sm-2">
+				<a class="btn btn-primary" href="{{ URL::route('job-submittel', array('jobId' => $jobId, 'userId' => $candidate->id)) }}">
+					<i class="fa fa-save"></i> <span>Mark Submittel</span>
+				</a>
 	</div>
-	<div class="col-sm-8 right-view">
+	@endif
+	<div class="col-sm-12 right-view">
 	    <div class="row"><div class="col-sm-4">
 	        Email:
-	        </div><div class="col-sm-8">
+				</div><div class="col-sm-8">
 	        	{{$candidate->email}}
 	        </div>
 	    </div>
@@ -97,7 +99,7 @@
 	        </div><div class="col-sm-8">
 	        	{{$candidate->createdby->first_name. " ".$candidate->createdby->last_name }}
 	        </div>
-	    </div>    
+	    </div>
 	    <div class="row"><div class="col-sm-4">
 	        Created At:
 	        </div><div class="col-sm-8">
@@ -110,12 +112,15 @@
 	        	{{($candidate->updated_at != "" && $candidate->updated_at != "0000-00-00 00:00:00")?date("Y-m-d", strtotime($candidate->updated_at)):"-"}}
 	        </div>
 	    </div>
-	    @if($resume)
+			@if($resume)
+				<div class="row">
+					<div class="col-sm-4">
+						<strong>Resume:</strong>
+						 <a href="{{'/uploads/resumes/'.$resume->candidate_id.'/'.$resume->resume_path}}" title="Download Resume"><i class="glyphicon glyphicon-download"></i> Download Resume</a>
+					</div>
+				</div>
         	<div class="row">
-	        	<div class="col-sm-4">
-			        Resume:
-			    </div>
-			    <div class="col-sm-8">
+			    <div class="col-sm-12" style="border:1px dashed #d8d8d8; margin-top:20px; padding:25px 10px;">
 			        	{{htmlspecialchars_decode($resume->resume)}}
 			    </div>
 	    	</div>

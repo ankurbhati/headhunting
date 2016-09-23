@@ -35,9 +35,7 @@ Route::match(array('POST'), 'login', array(
 		'uses'    =>    'UserController@login'
 ), array('before' => 'csrf', function(){}));
 
-
 Route::group(array('before' => 'auth'), function() {
-
 
 	/**
 	 * Routes for post-requirement
@@ -45,6 +43,22 @@ Route::group(array('before' => 'auth'), function() {
 	Route::match(array('POST'), '/get-assignee', array(
 			'as'    =>    'get-assignee',
 			'uses'    =>    'UserController@postRequirement'
+	));
+
+	/**
+	 * Routes For REST API for new Employee
+	 */
+	Route::match(array('GET', 'POS'), 'job-submittel/{jobId}/{userId}', array(
+			'as'    =>    'job-submittel',
+			'uses'    =>    'CandidateController@jobSubmittel'
+	));
+
+	/**
+	 * Routes for post-requirement
+	 */
+	Route::match(array('POST'), '/get-mail-groups', array(
+			'as'    =>    'get-mail-groups',
+			'uses'    =>    'HomeController@getMailGroups'
 	));
 
 	/**
@@ -200,6 +214,29 @@ Route::group(array('before' => 'auth'), function() {
 			'uses'    =>    'SaleController@listRequirement'
 	));
 
+	/**
+	 * Routes for list-submittel
+	 */
+	Route::match(array('GET'), '/list-submittel/{id?}', array(
+			'as'    =>    'list-submittel',
+			'uses'    =>    'SaleController@listSubmittel'
+	));
+
+	/**
+	 * Routes for list-requirement
+	 */
+	Route::match(array('GET'), '/add-comment-job-post/{jobId}', array(
+			'as'    =>    'add-comment-job-post-view',
+			'uses'    =>    'SaleController@addCommentView'
+	));
+
+	/**
+	 * Routes for list-requirement
+	 */
+	Route::match(array('POST'), '/add-comment-job-post/{jobId}', array(
+			'as'    =>    'add-comment-job-post',
+			'uses'    =>    'SaleController@addComment'
+	));
 
 	/**
 	 * Routes for list-requirement
@@ -253,7 +290,7 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for new Employee
 	 */
-	Route::match(array('GET'), '/advance-search', array(
+	Route::match(array('GET'), '/advance-search/{jobId?}', array(
 			'as'    =>    'advance-search',
 			'uses'    =>    'SearchController@advanceSearch'
 	));
@@ -317,63 +354,6 @@ Route::group(array('before' => 'auth'), function() {
 			'uses'    =>    'ClientController@deleteClient'
 	));
 
-
-	/**
-	 * Routes For REST API for new Vendor
-	 */
-	Route::match(array('GET'), '/add-vendor', array(
-			'as'    =>    'add-vendor',
-			'uses'    =>    'VendorController@create'
-	));
-
-	/**
-	 * Routes For REST API for new Vendor
-	 */
-	Route::match(array('POST'), '/add-vendor', array(
-			'as'    =>    'add-vendor',
-			'uses'    =>    'VendorController@createVendor'
-	));
-
-	/**
-	 * Routes For REST API for new Vendor
-	 */
-	Route::match(array('GET'), '/vendors', array(
-			'as'    =>    'vendor-list',
-			'uses'    =>    'VendorController@vendorList'
-	));
-
-	/**
-	 * Routes For REST API for new Vendor
-	 */
-	Route::match(array('GET'), '/view-vendor/{id}', array(
-		'as'    =>    'view-vendor',
-		'uses'    =>    'VendorController@viewVendor'
-	));
-
-	/**
-	 * Routes For REST API for edit Vendor
-	 */
-	Route::match(array('GET'), '/edit-vendor/{id}', array(
-			'as'    =>    'edit-vendor',
-			'uses'    =>    'VendorController@editVendor'
-	));
-
-	/**
-	 * Routes For REST API for edit Vendor
-	 */
-	Route::match(array('POST'), '/edit-vendor/{id}', array(
-			'as'    =>    'update-vendor',
-			'uses'    =>    'VendorController@updateVendor'
-	));
-
-	/**
-	 * Routes For REST API for new Vendor
-	 */
-	Route::match(array('GET'), '/delete-vendor/{id}', array(
-			'as'    =>    'delete-vendor',
-			'uses'    =>    'VendorController@deleteVendor'
-	));
-
 	/**
 	 * Routes For REST API for new Candidate
 	 */
@@ -401,7 +381,7 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for new Candidate
 	 */
-	Route::match(array('GET'), '/view-candidate/{id}', array(
+	Route::match(array('GET'), '/view-candidate/{id}/{jobId?}', array(
 		'as'    =>    'view-candidate',
 		'uses'    =>    'CandidateController@viewCandidate'
 	));
@@ -433,9 +413,90 @@ Route::group(array('before' => 'auth'), function() {
 	/**
 	 * Routes For REST API for new Employee
 	 */
-	Route::match(array('POST'), '/advance-search', array(
+	Route::match(array('POST'), '/advance-search/{jobId?}', array(
 			'as'    =>    'search-result',
 			'uses'    =>    'SearchController@searchResult'
 	));
+
+	/**
+	 * Routes For GET API for mass mail
+	 */
+	Route::match(array('GET'), '/mass-mail/', array(
+			'as'    =>    'mass-mail',
+			'uses'    =>    'UserController@massMail'
+	));
+
+	/**
+	 * Routes For POST API for mass mail
+	 */
+	Route::match(array('POST'), '/mass-mail/', array(
+			'as'    =>    'mass-mail',
+			'uses'    =>    'UserController@massMail'
+	));
+
+	/**
+	 * Routes For REST API forsendMailFromCron
+	 */
+	Route::match(array('GET'), '/send-mail-from-cron', array(
+			'as'    =>    'send-mail-from-cron',
+			'uses'    =>    'UserController@sendMailFromCron'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/add-third-party', array(
+			'as'    =>    'add-third-party',
+			'uses'    =>    'ThirdpartyController@create'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('POST'), '/add-third-party', array(
+			'as'    =>    'add-third-party',
+			'uses'    =>    'ThirdpartyController@createThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/third-parties', array(
+			'as'    =>    'third-party-list',
+			'uses'    =>    'ThirdpartyController@thirdpartyList'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/view-third-party/{id}', array(
+		'as'    =>    'view-third-party',
+		'uses'    =>    'ThirdpartyController@viewThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for edit Vendor
+	 */
+	Route::match(array('GET'), '/edit-third-party/{id}', array(
+			'as'    =>    'edit-third-party',
+			'uses'    =>    'ThirdpartyController@editThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for edit Vendor
+	 */
+	Route::match(array('POST'), '/edit-third-party/{id}', array(
+			'as'    =>    'update-third-party',
+			'uses'    =>    'ThirdpartyController@updateThirdparty'
+	));
+
+	/**
+	 * Routes For REST API for new Vendor
+	 */
+	Route::match(array('GET'), '/delete-third-party/{id}', array(
+			'as'    =>    'delete-third-party',
+			'uses'    =>    'ThirdpartyController@deleteThirdparty'
+	));
+
 	/** ANKUR BHATI **/
 });

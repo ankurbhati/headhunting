@@ -39,21 +39,21 @@
                                 <th>Already Assigned</th>
                               @endif
                             @endif
-                          </tr>
+                          </tr> 
                       @endforeach
-	                    @foreach($users as $user)
-		                      <tr>
-		                        <td>{{$user->peer->first_name. " ".$user->peer->last_name }}</td>
-		                        <td>{{$user->peer->email}}</td>
-		                        <td>{{$user->peer->designation}}</td>
-		                        <td>{{$user->peer->userRoles[0]->roles->role}}</td>
+                      @foreach($users as $user)
+                          <tr>
+                            <td>{{$user->peer->first_name. " ".$user->peer->last_name }}</td>
+                            <td>{{$user->peer->email}}</td>
+                            <td>{{$user->peer->designation}}</td>
+                            <td>{{$user->peer->userRoles[0]->roles->role}}</td>
                             @if($jobPostId > 0 && $jobPost->jobsAssignedToId($user->peer->id)->count() == 0)
                               <th><a href="{{ URL::route('assign-requirement', array('id' => $jobPostId, 'assignedTo' => $user->peer->id )) }}" title="Assign To {{$user->peer->first_name}}"><i class="fa fa-plus"></i>Assign Job Post</a></th>
                             @else
                               <th>Already Assigned</th>
                             @endif
-		                      </tr>
-						          @endforeach
+                          </tr> 
+                      @endforeach
                     </tbody>
                     <tfoot>
                       <tr>

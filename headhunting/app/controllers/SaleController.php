@@ -5,17 +5,17 @@
  * This file contatins controller class to provide APIs for Users
  *
  * @category   Controller
- * @package    User Management
+ * @package    Sale Management
  * @version    SVN: <svn_id>
  * @since      29th May 2014
  *
  */
 
 /**
- * Contrller class will be responsible for All User management Related Actions
+ * Contrller class will be responsible for All Sale management Related Actions
  *
  * @category   Controller
- * @package    User Management
+ * @package    Sale Management
  *
  */
 class SaleController extends HelperController {
@@ -28,10 +28,10 @@ class SaleController extends HelperController {
 	 *
 	 */
 	public function postRequirementView() {
-		if(Auth::user()->getRole() <= 2) {
+		if(Auth::user()->getRole() <= 3) {
 			$jobPost = new JobPost();
 			$country = Country::all();
-			
+
 			$count = array();
 			foreach( $country as $key => $value) {
 				$count[$value->id] = $value->country;
@@ -43,13 +43,7 @@ class SaleController extends HelperController {
 				$client[$value->id] = $value->first_name."-".$value->email;
 			}
 
-			$vendors = Vendor::all();
-			$vendor = array();
-			foreach( $vendors as $key => $value) {
-				$vendor[$value->id] = $value->vendor_domain."-".$value->email;
-			}
-
-			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost, 'client' => $client, 'vendor' => $vendor));
+			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost, 'client' => $client));
 		} else {
 			return Redirect::to('dashboard');
 		}
@@ -80,9 +74,10 @@ class SaleController extends HelperController {
 			return Redirect::to('dashboard')->with(array("message" => "error"));
 		}
 	}
+
 	/**
 	 *
-	 * listRequirement() : listRequirement
+	 * deleteRequirement() : deleteRequirement
 	 *
 	 * @return Object : View
 	 *
@@ -102,7 +97,7 @@ class SaleController extends HelperController {
 	 *
 	 */
 	public function viewRequirement($id) {
-		$jobPost = JobPost::with(array('country', 'state', 'client', 'vendor', 'city'))->find($id);
+		$jobPost = JobPost::with(array('country', 'state', 'client', 'city'))->find($id);
 		return View::make('sales.viewRequirement')->with(array('title' => 'View Requirement - Headhunting', 'jobPost' => $jobPost,));
 	}
 
@@ -146,7 +141,7 @@ class SaleController extends HelperController {
 							'state_id' =>  'required',
 							'description' =>  'required|max:1000',
 							'client_id' => 'required',
-							'vendor_id' => 'required'
+							'mode_of_interview' => 'max:247'
 					)
 			);
 
@@ -216,7 +211,7 @@ class SaleController extends HelperController {
 							'state_id' =>  'required',
 							'description' =>  'required|max:1000',
 							'client_id' => 'required',
-							'vendor_id' => 'required'
+							'mode_of_interview' => 'max:247'
 					)
 			);
 
@@ -273,7 +268,7 @@ class SaleController extends HelperController {
 		if($id != "") {
 			$jobPost = JobPost::find($id);
 		}
-		if(Auth::user()->getRole() <= 2 && !empty($jobPost) && Auth::user()->id == $jobPost->created_by) {
+		if(Auth::user()->getRole() <= 3 && !empty($jobPost) && Auth::user()->id == $jobPost->created_by) {
 			$country = Country::all();
 			$count = array();
 			foreach( $country as $key => $value) {
@@ -286,16 +281,80 @@ class SaleController extends HelperController {
 				$client[$value->id] = $value->first_name."-".$value->email;
 			}
 
-			$vendors = Vendor::all();
-			$vendor = array();
-			foreach( $vendors as $key => $value) {
-				$vendor[$value->id] = $value->vendor_domain."-".$value->email;
-			}
-
-			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost, 'client' => $client, 'vendor' => $vendor));
+			return View::make('sales.postRequirement')->with(array('title' => 'Post Requirement - Headhunting', 'country' => $count, 'jobPost' => $jobPost, 'client' => $client));
 		} else {
 			return Redirect::to('dashboard');
 		}
 	}
 
+	/**
+	 *
+	 * listSubmittel() : listSubmittel
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function listSubmittel($id=0) {
+		if($id == 0) {
+			$candidateApplications = CandidateApplication::all();
+		} else {
+			$candidateApplications = CandidateApplication::with(array('candidate', 'requirement'))
+																									 ->where('job_post_id', '=', $id)
+																									 ->get();
+		}
+		return View::make('sales.listSubmittels')->with(array('title' => 'List Job Submittels - Headhunting', 'candidateApplications' => $candidateApplications));
+	}
+
+	/**
+	 *
+	 * addCommentView() : addCommentView
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function addCommentView($jobId) {
+		$jobPost = JobPost::with(array('comments', 'comments.user'))->select(array('id', 'title'))->where('id', '=', $jobId)->get();
+		if(!$jobPost->isEmpty()) {
+			$jobPost = $jobPost->first();
+			return View::make('sales.postCommentRequirement')->with(array('title' => 'Job Post Comments - Headhunting', 'jobPost' => $jobPost));
+		}
+	}
+
+	/**
+	 *
+	 * addCommentView() : addCommentView
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function addComment($jobId) {
+		$jobPost = JobPost::where('id', '=', $jobId)->get();
+		if(!$jobPost->isEmpty()) {
+
+			$validate=Validator::make (
+					Input::all(), array(
+							'comment' =>  'required',
+							'job_post_id' => 'required|numeric'
+					)
+			);
+
+			if($validate->fails()) {
+
+				return Redirect::to('add-comment-job-post', array('jobId' => $jobId))
+											 ->withErrors($validate)
+											 ->withInput();
+			} else {
+
+				$jobPostComment = new JobPostComment();
+				$jobPostComment->comment = Input::get('comment');
+				$jobPostComment->job_post_id = Input::get('job_post_id');
+				$jobPostComment->added_by = Auth::user()->id;
+				$jobPostComment->created_at = date('Y-m-d H:i:s');
+				if($jobPostComment->save()) {
+					$jobPost = JobPost::with(array('comments', 'comments.user'))->select(array('id', 'title'))->where('id', '=', $jobId)->get()->first();
+					return View::make('sales.postCommentRequirement')->with(array('title' => 'Job Post Comments - Headhunting', 'jobPost' => $jobPost));
+				}
+			}
+		}
+	}
 }

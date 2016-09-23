@@ -107,8 +107,8 @@ class UserController extends HelperController {
 		$currentUserRole = Auth::user()->getRole();
 		if($currentUserRole === 1) {
 			$managerUsers = User::select(array('id', 'first_name', 'last_name', 'email', 'designation'))->whereHas('userRoles', function($q){
-						$q->where('role_id', '<', 6)
-							->where('user_id', '!=', Auth::user()->id);
+				    $q->where('role_id', '<', 6)
+				      ->where('user_id', '!=', Auth::user()->id);
 			})->get();
 		} else {
 			$users = UserPeer::with(array('peer', 'peer.userRoles'))->where("peer_id", "=", Auth::user()->id)->get();
@@ -118,13 +118,13 @@ class UserController extends HelperController {
 			$jobPost = JobPost::find($id);
 			if($currentUserRole === 2 || $currentUserRole === 3 || $currentUserRole === 5) {
 				$managerUsers = User::select(array('id', 'first_name', 'last_name', 'email', 'designation'))->whereHas('userRoles', function($q){
-						$q->where('role_id', '<=', 5)
-							->where('role_id', '>=', 4);
+				    $q->where('role_id', '<=', 5)
+				      ->where('role_id', '>=', 4);
 				})->get();
 			}
 		}
 
-
+		
 		return View::make('User.teamList')->with(array('title' => 'Team List', 'users' => $users, 'jobPostId' => $id, 'jobPost' => $jobPost, 'managerUsers' => $managerUsers));
 	}
 
@@ -644,4 +644,116 @@ class UserController extends HelperController {
 			}
 		}
 	}
+
+	/**
+	 *
+	 * mass_mail() : mass mail view
+	 *
+	 * @return Object : View
+	 *
+	 */
+	public function massMail() {
+
+		if (Request::isMethod('post')) {
+			Validator::extend('has', function($attr, $value, $params) {
+
+				if(!count($params)) {
+
+					throw new \InvalidArgumentException('The has validation rule expects at least one parameter, 0 given.');
+				}
+
+				foreach ($params as $param) {
+					switch ($param) {
+						case 'num':
+							$regex = '/\pN/';
+							break;
+						case 'letter':
+							$regex = '/\pL/';
+							break;
+						case 'lower':
+							$regex = '/\p{Ll}/';
+							break;
+						case 'upper':
+							$regex = '/\p{Lu}/';
+							break;
+						case 'special':
+							$regex = '/[\pP\pS]/';
+							break;
+						default:
+							$regex = $param;
+					}
+
+					if(! preg_match($regex, $value)) {
+						return false;
+					}
+				}
+
+				return true;
+			});
+
+			// Server Side Validation.
+			$validate=Validator::make (
+				Input::all(), array(
+						'mail_group_id' =>  'required',
+						'description' => 'required'
+				)
+			);
+
+			if($validate->fails()) {
+				return Redirect::to('mass-mail')
+							   ->withErrors($validate)
+							   ->withInput();
+			} else {
+				$mass_mail = new MassMail();
+				$mass_mail->mail_group_id = Input::get('mail_group_id');
+				$mass_mail->description = Input::get('description');
+				$mass_mail->send_by = Auth::user()->id;
+				if($mass_mail->save()) {
+					return Redirect::route('dashboard-view');
+				} else {
+					return Redirect::route('mass-mail')->withInput();
+				}
+			}
+		} else {
+			$mail_groups = MailGroup::all()->lists('name', 'id');
+			return View::make('User.massMail')->with(array('title' => 'Mass Mail', 'mail_groups'=> $mail_groups));
+		}
+	}
+
+
+	/**
+	 *
+	 * sendMailFromCron() : sendMailFromCron
+	 *
+	 * @return Object :
+	 *
+	 */
+	public function sendMailFromCron() {
+		$mass_mails = MassMail::with(array('mailgroup'))->where('status', '=', '1')->get();
+		foreach($mass_mails as $mass_mail) {
+			$mass_mail->status = 2;
+			$mass_mail->setConnection('master');
+			$mass_mail->save();
+			$authUser = User::find($mass_mail->send_by);
+			$model = $mass_mail->mailgroup->model;
+			$users = MailGroupMember::where('group_id', '=', $mass_mail->mailgroup->id)->lists('user_id');
+			$user_list = $model::whereIn('id', $users)->get();
+			foreach($user_list as $user) {
+				Config::set('mail.username', $authUser->email);
+				Config::set('mail.from.address', $authUser->email);
+				Config::set('mail.from.name', $authUser->first_name .' '.$authUser->last_name );
+       			Config::set('mail.password', $authUser->email_password);
+
+				Mail::queue([], [], function($message) use(&$mass_mail, &$user)
+				{
+				    $message->to($user->email, $user->first_name . " " . $user->last_name)
+				    ->subject('Head hunting')
+				    ->setBody($mass_mail->description, 'text/html');
+				});
+			}
+			$mass_mail->status = 3;
+			$mass_mail->save();
+		}
+	}
+
 }

@@ -4,7 +4,7 @@
 }
 .content-wrapper .content-header {
 	background-color:#ecf0f5;
-	padding-bottom:15px;	
+	padding-bottom:15px;
 }
 .navbar-nav > .user-menu > .dropdown-menu > .user-body {
 	padding:10px 0;
@@ -13,7 +13,7 @@
 	border-right:1px solid #333;
 }
 .navbar-nav > .user-menu > .dropdown-menu > .user-body .col-xs-6 a:hover{
-	color:#3c8dbc !important;	
+	color:#3c8dbc !important;
 }
 .user-view {
 	padding:10px;
@@ -49,4 +49,80 @@
 
 .errorlogin{
 	color: #FF0000;
+}
+
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header {
+	min-height:70px;
+	height:auto;
+}
+
+.margin-left-15 {
+	margin-left:15px;
+}
+
+/*
+.skin-blue .main-header .logo, .skin-blue .main-header .navbar {
+	background-color: #a0a0a0;
+}
+
+.skin-blue .main-header .logo:hover {
+	background-color: #a0a0a0;
+}
+
+.main-header .sidebar-toggle {
+	background-color: #a0a0a0;
+	border-left:1px solid #000;
+}
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+	background-color: #a0a0a0;
+}
+*/
+
+.user-panel {
+	height:40px;
+}
+
+.user-panel .info {
+	left:0;
+}
+
+.clock{
+	padding: 20px;
+	height: 100%;
+	width: 100%;
+}
+
+.clock > div {
+    float: left;
+    padding: 20px;
+}
+
+.clock ul {
+    width: 200px;
+    margin: 0 auto;
+    padding: 0px;
+    list-style: none;
+    text-align: center;
+}
+
+.clock li {
+    display: inline-block;
+    font-size: 3em;
+    text-align: center;
+    text-shadow: 0 0 5px #00c6ff;
+}
+
+.date {
+    font-size: 1em;
+    text-align: center;
+    text-shadow: 0 0 5px #00c6ff;
+}
+
+.country {
+    display: block;
+    font-size: 1.5em;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 5px #00c6ff;
 }

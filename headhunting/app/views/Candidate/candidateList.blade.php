@@ -35,6 +35,9 @@
 		                        	@if(Auth::user()->getRole() <= 3)
 		                        		<a href="{{ URL::route('delete-candidate', array($candidate->id)) }}" title="Delete Profile"><i class="fa fa-fw fa-ban text-danger"></i></a>
 		                        	@endif
+                              @if(Auth::user()->getRole() <= 3 && $candidate->resume_path && file_exists(public_path('/uploads/resumes/'.$candidate->id.'/'.$candidate->resume_path)))
+                              <a href="{{'/uploads/resumes/'.$candidate->id.'/'.$candidate->resume_path}}" title="Download Resume" target="_blank"><i class="glyphicon glyphicon-download"></i></a>
+                              @endif
 		                        </td>
 		                      </tr>
 	                   	@empty

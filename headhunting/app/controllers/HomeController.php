@@ -1,6 +1,6 @@
 <?php
 
-class HomeController extends BaseController {
+class HomeController extends HelperController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -20,4 +20,22 @@ class HomeController extends BaseController {
 		return View::make('hello');
 	}
 
+	/**
+	 *
+	 * getMailGroups() : getMailGroups
+	 *
+	 *
+	 * @return Object : JSON Of Groups.
+	 *
+	 */
+	public function getMailGroups() {
+
+			$name = Input::get('term');
+
+			// Building Query for Getting Names of the Physician for type 2
+			$groups = MailGroup::select(array("name", "id"))
+									->where("name", "like", "%{$name}%")
+									->get();
+			return $this->sendJsonResponseOnly($groups->toArray());
+	}
 }

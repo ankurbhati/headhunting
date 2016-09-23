@@ -10,14 +10,7 @@ class ClientController extends \BaseController {
 	 */
 	public function create()
 	{
-		//$company = CompanyDetail::all();
-		$companies = CompanyDetail::all()->lists('company_name', 'id');
-		//$companies = array();
-		//foreach( $company as $key => $value) {
-		//	$companies[$value->id] = $value->company_name;
-		//}
-
-		return View::make('Client.newClient')->with(array('title' => 'Add Client', 'companies' => $companies));
+		return View::make('Client.newClient')->with(array('title' => 'Add Client'));
 	}
 
 
@@ -73,7 +66,8 @@ class ClientController extends \BaseController {
 							'first_name' => 'required|max:50',
 							'last_name' => 'required|max:50',
 							'phone' => 'max:14',
-							'company' =>  'required|min:1|Exists:company_details,id',
+							'phone_ext' => 'max:10',
+							'company_name' =>  'max:247',
 					)
 			);
 
@@ -89,7 +83,8 @@ class ClientController extends \BaseController {
 				$client->last_name = Input::get('last_name');
 				$client->email = Input::get('email');
 				$client->phone = Input::get('phone');
-				$client->company_id = Input::get('company');
+				$client->phone_ext = Input::get('phone_ext');
+				$client->company_name = Input::get('company_name');
 				$client->created_by = Auth::user()->id;
 
 				// Checking Authorised or not
@@ -154,7 +149,7 @@ class ClientController extends \BaseController {
 	public function editClient($id) {
 
 		if(Auth::user()->getRole() <= 3) {
-			$companies = CompanyDetail::all()->lists('company_name', 'id');	
+			$companies = CompanyDetail::all()->lists('company_name', 'id');
 			/*
 			$company = CompanyDetail::all();
 			$companies = array();
@@ -232,7 +227,8 @@ class ClientController extends \BaseController {
 							'first_name' => 'required|max:50',
 							'last_name' => 'required|max:50',
 							'phone' => 'max:14',
-							'company' =>  'required|min:1|Exists:company_details,id',
+							'phone_ext' => 'max:10',
+							'company_name' =>  'max:247',
 					)
 			);
 			if($validate->fails()) {
@@ -257,7 +253,8 @@ class ClientController extends \BaseController {
 				$client->first_name = Input::get('first_name');
 				$client->last_name = Input::get('last_name');
 				$client->phone = Input::get('phone');
-				$client->company_id = Input::get('company');
+				$client->phone_ext = Input::get('phone_ext');
+				$client->company_name = Input::get('company_name');
 
 				// Checking Authorised or not
 				if($client->save()) {
@@ -286,6 +283,5 @@ class ClientController extends \BaseController {
 			}
 		}
 	}
-
 
 }
